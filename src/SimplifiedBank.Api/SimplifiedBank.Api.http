@@ -1,0 +1,6 @@
+@SimplifiedBank.Api_HostAddress = http://localhost:5163
+
+GET {{SimplifiedBank.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
