@@ -9,7 +9,7 @@ public class User : BaseEntity
     public string PasswordHash { get; set; } = string.Empty;
     public string Document { get; set; } = string.Empty;
     public decimal Balance { get; set; }
-    public UserType Type { get; set; }
+    public EUserType Type { get; set; }
     public List<Transaction> TransactionsSent { get; set; } = null!;
     public List<Transaction> TransactionsReceived { get; set; } = null!;
 }
