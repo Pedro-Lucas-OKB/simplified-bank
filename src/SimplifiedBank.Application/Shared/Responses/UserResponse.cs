@@ -29,4 +29,21 @@ public sealed record UserResponse
             Type = user.Type
         };
     }
+    
+    /// <summary>
+    /// Converte uma lista de Users em uma lista de UserResponse
+    /// </summary>
+    /// <param name="users"></param>
+    /// <returns></returns>
+    public static List<UserResponse> ConvertAll(List<User> users)
+    {
+        List<UserResponse> userResponses = new();
+
+        foreach (var user in users)
+        {
+            userResponses.Add(user);
+        }
+        
+        return userResponses;
+    }
 }
