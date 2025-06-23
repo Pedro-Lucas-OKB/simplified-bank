@@ -1,10 +1,11 @@
 using MediatR;
+using SimplifiedBank.Application.Shared.Responses;
 using SimplifiedBank.Domain.Exceptions;
 using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Users.GetById;
 
-public class GetByIdHandler : IRequestHandler<GetByIdRequest, GetByIdResponse>
+public class GetByIdHandler : IRequestHandler<GetByIdRequest, UserResponse>
 {
     private readonly IUserRepository _userRepository;
     
@@ -13,7 +14,7 @@ public class GetByIdHandler : IRequestHandler<GetByIdRequest, GetByIdResponse>
         _userRepository = userRepository;
     }
 
-    public async Task<GetByIdResponse> Handle(GetByIdRequest request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(GetByIdRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 

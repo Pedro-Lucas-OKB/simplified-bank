@@ -1,0 +1,52 @@
+using FluentValidation;
+using SimplifiedBank.Domain;
+using SimplifiedBank.Domain.Enums;
+using SimplifiedBank.Domain.Validators;
+
+namespace SimplifiedBank.Application.UseCases.Users.Create;
+
+public class CreateValidator : AbstractValidator<CreateRequest>
+{
+    public CreateValidator()
+    {
+        RuleFor(user => user.FullName)
+            .NotEmpty()
+            .WithMessage("O nome completo é obrigatório.")
+            .MaximumLength(DomainConfiguration.UserFullNameMaximumLength)
+            .WithMessage($"O nome deve ter, no máximo, {DomainConfiguration.UserFullNameMaximumLength} caracteres.")
+            .MinimumLength(DomainConfiguration.UserFullNameMinimumLength)
+            .WithMessage($"O nome deve ter, pelo menos, {DomainConfiguration.UserFullNameMinimumLength} caracteres.")
+            .Matches(@"^[a-zA-Z\u00C0-\u017F´]+\s+[a-zA-Z\u00C0-\u017F´]{0,}$")
+            .WithMessage("O nome deve ser completo e conter apenas letras e espaços em branco.");
+
+        RuleFor(user => user.Email)
+            .NotEmpty()
+            .WithMessage("O e-mail é obrigatório.")
+            .EmailAddress()
+            .WithMessage("Digite um e-mail válido.");
+
+        RuleFor(user => user.Password)
+            .NotEmpty()
+            .WithMessage("A senha é obrigatória.")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
+            .WithMessage(
+                "A senha deve conter pelo menos 8 caracteres, com letra maiúscula e minúscula, número e caracteres especiais (@, $, !, %, *, ?, &)")
+            .MaximumLength(DomainConfiguration.UserPasswordMaximumLength)
+            .WithMessage(
+                $"A senha deve conter, no máximo, {DomainConfiguration.UserPasswordMaximumLength} caracteres.");
+
+        RuleFor(user => user.Type)
+            .NotEmpty()
+            .WithMessage("Indique o tipo de usuário (Comum ou Lojista).")
+            .IsInEnum()
+            .WithMessage("O tipo informado não é válido.");
+        
+        RuleFor(user => user.Document)
+            .NotEmpty()
+            .WithMessage(user => $"O {(user.Type == EUserType.Common ? "CPF" : "CNPJ")} é obrigatório.")
+            .Must((user, document) => user.Type == EUserType.Common
+                ? CpfValidator.IsValid(document)
+                : CnpjValidator.IsValid(document))
+            .WithMessage(user => $"O {(user.Type == EUserType.Common ? "CPF" : "CNPJ")} informado é inválido.");
+    }
+}

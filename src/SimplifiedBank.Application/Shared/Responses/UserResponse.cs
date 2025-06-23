@@ -1,9 +1,9 @@
 using SimplifiedBank.Domain.Entities;
 using SimplifiedBank.Domain.Enums;
 
-namespace SimplifiedBank.Application.UseCases.Users.GetById;
+namespace SimplifiedBank.Application.Shared.Responses;
 
-public sealed record GetByIdResponse
+public sealed record UserResponse
 {
     public Guid Id { get; set; }
     public string FullName { get; set; } = string.Empty;
@@ -13,13 +13,13 @@ public sealed record GetByIdResponse
     public EUserType Type { get; set; }
     
     /// <summary>
-    /// Mapeamento nativo de User para GetByIdResponse
+    /// Mapeamento nativo de User para UserResponse
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
-    public static implicit operator GetByIdResponse(User user)
+    public static implicit operator UserResponse(User user)
     {
-        return new GetByIdResponse
+        return new UserResponse
         {
             Id = user.Id,
             FullName = user.FullName,

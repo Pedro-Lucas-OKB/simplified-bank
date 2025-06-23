@@ -2,5 +2,5 @@ namespace SimplifiedBank.Domain.Interfaces;
 
 public interface IUnitOfWork
 {
-    Task CommitAsync();
+    Task CommitAsync(CancellationToken cancellationToken);
 }
