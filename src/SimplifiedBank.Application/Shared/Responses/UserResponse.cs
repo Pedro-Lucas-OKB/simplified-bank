@@ -11,7 +11,8 @@ public sealed record UserResponse
     public string Document { get; set; } = string.Empty;
     public decimal Balance { get; set; }
     public EUserType Type { get; set; }
-    
+    public string TypeName => Type.ToString();
+
     /// <summary>
     /// Mapeamento nativo de User para UserResponse
     /// </summary>
@@ -28,5 +29,22 @@ public sealed record UserResponse
             Balance = user.Balance,
             Type = user.Type
         };
+    }
+    
+    /// <summary>
+    /// Converte uma lista de Users em uma lista de UserResponse
+    /// </summary>
+    /// <param name="users"></param>
+    /// <returns></returns>
+    public static List<UserResponse> ConvertAll(List<User> users)
+    {
+        List<UserResponse> userResponses = new();
+
+        foreach (var user in users)
+        {
+            userResponses.Add(user);
+        }
+        
+        return userResponses;
     }
 }

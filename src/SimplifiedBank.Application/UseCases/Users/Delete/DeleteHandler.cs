@@ -21,7 +21,7 @@ public class DeleteHandler : IRequestHandler<DeleteRequest, UserResponse>
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (user is null)
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("Usuário não pôde ser encontrado.");
         
         await _userRepository.DeleteAsync(user, cancellationToken);
         

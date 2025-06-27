@@ -15,8 +15,8 @@ public class UpdatePersonalInfoValidator : BaseEntityValidator<UpdatePersonalInf
             .WithMessage($"O nome deve ter, no máximo, {DomainConfiguration.UserFullNameMaximumLength} caracteres.")
             .MinimumLength(DomainConfiguration.UserFullNameMinimumLength)
             .WithMessage($"O nome deve ter, pelo menos, {DomainConfiguration.UserFullNameMinimumLength} caracteres.")
-            .Matches(@"^[a-zA-Z\u00C0-\u017F´]+\s+[a-zA-Z\u00C0-\u017F´]{0,}$")
-            .WithMessage("O nome deve ser completo e conter apenas letras e espaços em branco.");
+            .Matches(DomainConfiguration.CommonUserFullNameRegexPattern)
+            .WithMessage("O nome deve ser completo, cada palavra deve iniciar com letra maiúscula e deve conter apenas letras e espaços em branco.");
 
         RuleFor(user => user.Email)
             .NotEmpty()

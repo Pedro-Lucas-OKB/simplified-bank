@@ -23,20 +23,8 @@ public class GetAllHandler : IRequestHandler<GetAllRequest, List<UserResponse>>
             cancellationToken:cancellationToken);
 
         if (users is null)
-            throw new NoUsersOnDatabaseException();
+            throw new NoUsersOnDatabaseException("Não há usuários cadastrados.");
         
-        return ConvertAll(users);
-    }
-
-    private List<UserResponse> ConvertAll(List<User> users)
-    {
-        List<UserResponse> userResponses = new();
-
-        foreach (var user in users)
-        {
-            userResponses.Add(user);
-        }
-        
-        return userResponses;
+        return UserResponse.ConvertAll(users);
     }
 }

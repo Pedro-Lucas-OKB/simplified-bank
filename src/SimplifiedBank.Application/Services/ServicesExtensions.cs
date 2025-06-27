@@ -8,7 +8,7 @@ namespace SimplifiedBank.Application.Services;
 
 public static class ServicesExtensions
 {
-    public static void ConfigureApplicationApp(this IServiceCollection services)
+    public static void AddApplicationConfigurations(this IServiceCollection services)
     {
         services.AddMediatR(config => 
         {
