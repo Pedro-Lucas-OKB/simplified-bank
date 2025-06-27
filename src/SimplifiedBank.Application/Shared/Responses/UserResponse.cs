@@ -11,7 +11,8 @@ public sealed record UserResponse
     public string Document { get; set; } = string.Empty;
     public decimal Balance { get; set; }
     public EUserType Type { get; set; }
-    
+    public string TypeName => Type.ToString();
+
     /// <summary>
     /// Mapeamento nativo de User para UserResponse
     /// </summary>

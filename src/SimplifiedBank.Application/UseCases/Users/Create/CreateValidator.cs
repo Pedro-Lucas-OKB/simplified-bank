@@ -15,9 +15,12 @@ public class CreateValidator : AbstractValidator<CreateRequest>
             .MaximumLength(DomainConfiguration.UserFullNameMaximumLength)
             .WithMessage($"O nome deve ter, no máximo, {DomainConfiguration.UserFullNameMaximumLength} caracteres.")
             .MinimumLength(DomainConfiguration.UserFullNameMinimumLength)
-            .WithMessage($"O nome deve ter, pelo menos, {DomainConfiguration.UserFullNameMinimumLength} caracteres.")
-            .Matches(@"^[a-zA-Z\u00C0-\u017F´]+\s+[a-zA-Z\u00C0-\u017F´]{0,}$")
-            .WithMessage("O nome deve ser completo e conter apenas letras e espaços em branco.");
+            .WithMessage($"O nome deve ter, pelo menos, {DomainConfiguration.UserFullNameMinimumLength} caracteres.");
+            
+        RuleFor(user => user.FullName)
+            .Matches(DomainConfiguration.CommonUserFullNameRegexPattern)
+            .WithMessage("O nome deve ser completo, cada palavra deve iniciar com letra maiúscula e deve conter apenas letras e espaços em branco.")
+            .When(user => user.Type == EUserType.Common);
 
         RuleFor(user => user.Email)
             .NotEmpty()
@@ -36,11 +39,9 @@ public class CreateValidator : AbstractValidator<CreateRequest>
                 $"A senha deve conter, no máximo, {DomainConfiguration.UserPasswordMaximumLength} caracteres.");
 
         RuleFor(user => user.Type)
-            .NotEmpty()
-            .WithMessage("Indique o tipo de usuário (Comum ou Lojista).")
             .IsInEnum()
-            .WithMessage("O tipo informado não é válido.");
-        
+            .WithMessage("O tipo de usuário informado não é válido. Indique o tipo de usuário (Comum ou Lojista).");
+
         RuleFor(user => user.Document)
             .NotEmpty()
             .WithMessage(user => $"O {(user.Type == EUserType.Common ? "CPF" : "CNPJ")} é obrigatório.")

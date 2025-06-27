@@ -18,6 +18,7 @@ public class CreateHandler : IRequestHandler<CreateRequest, UserResponse>
 
     public async Task<UserResponse> Handle(CreateRequest request, CancellationToken cancellationToken)
     {
+        // gerar hash da senha a ser implementado
         User user = await _userRepository.CreateAsync(request, cancellationToken);;
         
         await _unitOfWork.CommitAsync(cancellationToken);
