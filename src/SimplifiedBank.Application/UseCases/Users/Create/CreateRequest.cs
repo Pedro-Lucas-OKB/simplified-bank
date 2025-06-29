@@ -22,13 +22,11 @@ public class CreateRequest : IRequest<UserResponse>
     /// <returns></returns>
     public static implicit operator User(CreateRequest request)
     {
-        return new User
-        {
-            FullName = request.FullName,
-            Email = request.Email,
-            PasswordHash = request.Password,
-            Document = request.Document,
-            Type = request.Type
-        };   
+        return User.Create(
+            request.FullName, 
+            request.Email, 
+            request.Password, 
+            request.Document, 
+            request.Type);
     }
 }

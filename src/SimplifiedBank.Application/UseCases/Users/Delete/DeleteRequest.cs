@@ -7,18 +7,5 @@ namespace SimplifiedBank.Application.UseCases.Users.Delete;
 
 public class DeleteRequest : IHasGuid, IRequest<UserResponse>
 {
-    public Guid Id { get; set; }
-    
-    /// <summary>
-    /// Mapeamento nativo de DeleteRequest para User
-    /// </summary>
-    /// <param name="request"></param>
-    /// <returns></returns>
-    public static implicit operator User(DeleteRequest request)
-    {
-        return new User
-        {
-            Id = request.Id,
-        };
-    }
+    public Guid Id { get; init; }
 }

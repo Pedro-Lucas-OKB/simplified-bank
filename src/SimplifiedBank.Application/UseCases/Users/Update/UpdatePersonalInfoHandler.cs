@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using MediatR;
 using SimplifiedBank.Application.Shared.Responses;
 using SimplifiedBank.Domain.Exceptions;
@@ -22,9 +23,11 @@ public class UpdatePersonalInfoHandler : IRequestHandler<UpdatePersonalInfoReque
 
         if (user is null)
             throw new UserNotFoundException("Usuário não pôde ser encontrado.");
+
+        if (user.Type != request.Type)
+            throw new ValidationException("O tipo informado não condiz com o da base de dados.");
         
-        user.FullName = request.FullName;
-        user.Email = request.Email;
+        user.UpdatePersonalInfo(request.FullName, request.Email);
         
         await _userRepository.UpdateAsync(user, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);

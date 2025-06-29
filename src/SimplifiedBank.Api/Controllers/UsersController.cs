@@ -10,6 +10,7 @@ using SimplifiedBank.Application.UseCases.Users.GetAll;
 using SimplifiedBank.Application.UseCases.Users.GetById;
 using SimplifiedBank.Application.UseCases.Users.Update;
 using SimplifiedBank.Domain.Entities;
+using SimplifiedBank.Domain.Enums;
 using SimplifiedBank.Domain.Exceptions;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -57,8 +58,9 @@ public class UsersController : ControllerBase
     }
 
     [SwaggerOperation(Summary = "Atualiza os dados pessoais (nome e e-mail) de um usuário a partir do seu ID.")]
-    [HttpPut("update/{id:guid}")]
+    [HttpPut("update/{type:int:range(0,1)}/{id:guid}")]
     public async Task<IActionResult> UpdatePersonalInfoAsync(
+        [FromRoute] int type,
         [FromRoute] Guid id,
         [FromBody] UpdatePersonalInfoDto updateDto,
         CancellationToken cancellationToken)
@@ -69,7 +71,8 @@ public class UsersController : ControllerBase
             {
                 Id = id,
                 FullName = updateDto.FullName,
-                Email = updateDto.Email
+                Email = updateDto.Email,
+                Type = (EUserType)type
             };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
@@ -175,9 +178,11 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var request = new GetAllRequest();
-            request.PageSize = pageSize;
-            request.PageNumber = pageNumber;
+            var request = new GetAllRequest
+            {
+                PageSize = pageSize,
+                PageNumber = pageNumber
+            };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }

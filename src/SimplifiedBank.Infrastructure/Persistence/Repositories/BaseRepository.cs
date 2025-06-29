@@ -33,14 +33,13 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        entity.DateCreated = DateTime.UtcNow;
+        //entity.DateCreated = DateTime.UtcNow;
         await Context.AddAsync(entity, cancellationToken);
         return entity;       
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        entity.DateModified = DateTime.UtcNow;
         Context.Update(entity);
 
         return entity;
