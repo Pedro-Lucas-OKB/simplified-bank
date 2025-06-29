@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Exceptions;
 
-public class NoUsersOnDatabaseException : Exception
+public class NoUsersOnDatabaseException : DomainException
 {
     public NoUsersOnDatabaseException()
     {

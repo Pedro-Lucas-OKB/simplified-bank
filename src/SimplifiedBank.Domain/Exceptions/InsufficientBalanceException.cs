@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Exceptions;
 
-public class InsufficientBalanceException : Exception
+public class InsufficientBalanceException : DomainException
 {
     public decimal Balance { get; }
     public InsufficientBalanceException()

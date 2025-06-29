@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Validators;
 
-public class CnpjValidator
+public abstract class CnpjValidator
 {
     private static string PermitedLetters { get; set; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static bool IsValid(string cnpj)

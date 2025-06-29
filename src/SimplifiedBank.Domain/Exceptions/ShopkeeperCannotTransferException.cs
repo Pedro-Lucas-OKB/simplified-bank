@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Exceptions;
 
-public class ShopkeeperCannotTransferException : Exception
+public class ShopkeeperCannotTransferException : DomainException
 {
     public ShopkeeperCannotTransferException()
     {

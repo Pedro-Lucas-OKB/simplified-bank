@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Exceptions;
 
-public class TransactionNotFoundException : Exception
+public class TransactionNotFoundException : DomainException
 {
     public TransactionNotFoundException()
     {

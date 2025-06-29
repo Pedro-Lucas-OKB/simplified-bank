@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Validators;
 
-public static class CpfValidator
+public abstract class CpfValidator
 {
     public static bool IsValid(string cpf)
     {

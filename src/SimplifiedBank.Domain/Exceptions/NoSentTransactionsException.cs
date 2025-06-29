@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Exceptions;
 
-public class NoSentTransactionsException : Exception
+public class NoSentTransactionsException : DomainException
 {
     public NoSentTransactionsException()
     {

@@ -1,6 +1,6 @@
 namespace SimplifiedBank.Domain.Exceptions;
 
-public class UserNotFoundException : Exception
+public class UserNotFoundException : DomainException
 {
     public UserNotFoundException()
     {
