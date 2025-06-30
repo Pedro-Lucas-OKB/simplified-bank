@@ -46,6 +46,10 @@ public class UsersController : ControllerBase
                 Message = error.ErrorMessage
             }));
         }
+        catch (DomainException e)
+        {
+            return StatusCode(400, e.Message);
+        }
         catch (DbUpdateException e)
         {
             return StatusCode(400, e.Message);

@@ -19,7 +19,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         if (id == Guid.Empty)
             return null;
         
-        return await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);       
+        return await Context.Set<TEntity>()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);       
     }
 
     public async Task<List<TEntity>?> GetAllAsync(int skip = 0, int take = 30, CancellationToken cancellationToken = default)

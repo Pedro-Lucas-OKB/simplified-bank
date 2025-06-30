@@ -100,7 +100,7 @@ public class User : BaseEntity
         UpdateDateModified();
     }
 
-    private static string NormalizeDocument(string document)
+    public static string NormalizeDocument(string document)
     {
         return new string(document.Where(char.IsLetterOrDigit).ToArray());
     }

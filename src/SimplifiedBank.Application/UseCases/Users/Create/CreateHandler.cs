@@ -1,6 +1,7 @@
 using MediatR;
 using SimplifiedBank.Application.Shared.Responses;
 using SimplifiedBank.Domain.Entities;
+using SimplifiedBank.Domain.Exceptions;
 using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Users.Create;
@@ -20,6 +21,9 @@ public class CreateHandler : IRequestHandler<CreateRequest, UserResponse>
 
     public async Task<UserResponse> Handle(CreateRequest request, CancellationToken cancellationToken)
     {
+        if (await _userRepository.ExistsByEmailOrDocumentAsync(request.Email, request.Document, cancellationToken))
+            throw new UserAlreadyExistsException("Já existe um usuário com esse email ou documento.");
+        
         var user = User.Create(
             request.FullName,
             request.Email,
