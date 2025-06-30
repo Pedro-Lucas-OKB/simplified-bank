@@ -35,7 +35,6 @@ public class UsersController : ControllerBase
     {
         try
         {
-            request.Document = new string(request.Document.Where(char.IsLetterOrDigit).ToArray());
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }

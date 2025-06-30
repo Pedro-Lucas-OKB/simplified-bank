@@ -31,7 +31,7 @@ public class CreateValidator : AbstractValidator<CreateRequest>
         RuleFor(user => user.Password)
             .NotEmpty()
             .WithMessage("A senha é obrigatória.")
-            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
+            .Matches(DomainConfiguration.UserPasswordRegexPattern)
             .WithMessage(
                 "A senha deve conter pelo menos 8 caracteres, com letra maiúscula e minúscula, número e caracteres especiais (@, $, !, %, *, ?, &)")
             .MaximumLength(DomainConfiguration.UserPasswordMaximumLength)

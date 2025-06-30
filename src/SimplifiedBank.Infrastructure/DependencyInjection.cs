@@ -5,6 +5,7 @@ using SimplifiedBank.Domain.Interfaces;
 using SimplifiedBank.Infrastructure.Context;
 using SimplifiedBank.Infrastructure.Persistence.Repositories;
 using SimplifiedBank.Infrastructure.Persistence.UnitOfWork;
+using SimplifiedBank.Infrastructure.Security;
 
 namespace SimplifiedBank.Infrastructure;
 
@@ -21,6 +22,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IPasswordHasher, SecureIdentityPasswordHasher>();
         
         return services;       
     }
