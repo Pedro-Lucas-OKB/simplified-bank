@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
     [SwaggerOperation(Summary = "Cria um novo usuário (Comum ou Lojista).")]
     [HttpPost("create")]
     public async Task<IActionResult> CreateAsync(
-        [FromBody] CreateRequest request,
+        [FromBody] CreateUserRequest request,
         CancellationToken cancellationToken)
     {
         try
@@ -70,7 +70,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var request = new UpdatePersonalInfoRequest
+            var request = new UpdateUserPersonalInfoRequest
             {
                 Id = id,
                 FullName = updateDto.FullName,
@@ -110,7 +110,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var request = new DeleteRequest
+            var request = new DeleteUserRequest
             {
                 Id = id
             };
@@ -125,13 +125,13 @@ public class UsersController : ControllerBase
                 Message = error.ErrorMessage
             }));
         }
-        catch (DbUpdateException e)
-        {
-            return StatusCode(400, e.Message);
-        }
         catch (UserNotFoundException e)
         {
             return StatusCode(404, e.Message);
+        }
+        catch (DbUpdateException e)
+        {
+            return StatusCode(400, e.Message);
         }
         catch
         {
@@ -147,7 +147,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var request = new GetByIdRequest
+            var request = new GetUserByIdRequest
             {
                 Id = id
             };
@@ -181,7 +181,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var request = new GetAllRequest
+            var request = new GetAllUsersRequest
             {
                 PageSize = pageSize,
                 PageNumber = pageNumber
