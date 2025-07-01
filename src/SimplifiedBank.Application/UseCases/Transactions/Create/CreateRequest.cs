@@ -17,11 +17,9 @@ public class CreateRequest : IRequest<TransactionResponse>
     /// <returns></returns>
     public static implicit operator Transaction(CreateRequest request)
     {
-        return new Transaction
-        {
-            SenderId = request.SenderId,
-            ReceiverId = request.ReceiverId,
-            Value = request.Value,
-        };
+        return Transaction.Create(
+            request.SenderId,
+            request.ReceiverId,
+            request.Value);
     }
 }

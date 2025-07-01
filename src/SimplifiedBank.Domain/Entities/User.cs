@@ -20,6 +20,17 @@ public class User : BaseEntity
         
     }
 
+    /// <summary>
+    /// Método Factory
+    /// </summary>
+    /// <param name="fullName"></param>
+    /// <param name="email"></param>
+    /// <param name="passwordHash"></param>
+    /// <param name="document"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    /// <exception cref="DomainException"></exception>
+    /// <exception cref="InvalidDocumentException"></exception>
     public static User Create(
         string fullName,
         string email,
@@ -58,6 +69,13 @@ public class User : BaseEntity
         };
     }
 
+    /// <summary>
+    /// Realiza uma ação de débito no saldo do usuário
+    /// </summary>
+    /// <param name="value"></param>
+    /// <exception cref="ShopkeeperCannotTransferException"></exception>
+    /// <exception cref="InvalidTransactionValueException"></exception>
+    /// <exception cref="InsufficientBalanceException"></exception>
     public void Debit(decimal value)
     {
         if (Type == EUserType.Shopkeeper)
@@ -78,6 +96,11 @@ public class User : BaseEntity
         UpdateDateModified();
     }
     
+    /// <summary>
+    /// Credita um valor ao saldo do usuário
+    /// </summary>
+    /// <param name="value"></param>
+    /// <exception cref="InvalidTransactionValueException"></exception>
     public void Credit(decimal value)
     {
         switch (value)
@@ -93,6 +116,11 @@ public class User : BaseEntity
         }
     }
 
+    /// <summary>
+    /// Atualiza Nome e/ou E-mail do usuário
+    /// </summary>
+    /// <param name="fullName"></param>
+    /// <param name="email"></param>
     public void UpdatePersonalInfo(string fullName, string email)
     {
         FullName = fullName;
