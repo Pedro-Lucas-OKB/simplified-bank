@@ -5,7 +5,7 @@ using SimplifiedBank.Application.Shared.Responses;
 
 namespace SimplifiedBank.Application.UseCases.Users.GetAll;
 
-public sealed record GetAllRequest : PagedRequest, IRequest<List<UserResponse>>
+public sealed record GetAllUsersRequest : PagedRequest, IRequest<List<UserResponse>>
 {
     
 }

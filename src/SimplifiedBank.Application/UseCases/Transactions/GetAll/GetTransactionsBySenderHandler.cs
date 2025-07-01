@@ -5,7 +5,7 @@ using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Transactions.GetAll;
 
-public class GetTransactionsBySenderHandler : IRequestHandler<GetTransactionsBySenderOrReceiverRequest, List<TransactionResponse>>
+public class GetTransactionsBySenderHandler : IRequestHandler<GetTransactionsBySenderRequest, List<TransactionResponse>>
 {
     private readonly ITransactionRepository _transactionRepository;
     private readonly IUserRepository _userRepository;
@@ -16,7 +16,7 @@ public class GetTransactionsBySenderHandler : IRequestHandler<GetTransactionsByS
         _userRepository = userRepository;   
     }
 
-    public async Task<List<TransactionResponse>> Handle(GetTransactionsBySenderOrReceiverRequest request, CancellationToken cancellationToken)
+    public async Task<List<TransactionResponse>> Handle(GetTransactionsBySenderRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
         

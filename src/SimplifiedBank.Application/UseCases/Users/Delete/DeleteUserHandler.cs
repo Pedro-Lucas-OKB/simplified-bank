@@ -5,20 +5,20 @@ using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Users.Delete;
 
-public class DeleteHandler : IRequestHandler<DeleteRequest, UserResponse>
+public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, UserResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public DeleteUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<UserResponse> Handle(DeleteRequest request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(DeleteUserRequest userRequest, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(userRequest.Id, cancellationToken);
 
         if (user is null)
             throw new UserNotFoundException("Usuário não pôde ser encontrado.");

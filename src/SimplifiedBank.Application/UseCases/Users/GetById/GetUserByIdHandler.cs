@@ -5,16 +5,16 @@ using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Users.GetById;
 
-public class GetByIdHandler : IRequestHandler<GetByIdRequest, UserResponse>
+public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, UserResponse>
 {
     private readonly IUserRepository _userRepository;
     
-    public GetByIdHandler(IUserRepository userRepository) 
+    public GetUserByIdHandler(IUserRepository userRepository) 
     {
         _userRepository = userRepository;
     }
 
-    public async Task<UserResponse> Handle(GetByIdRequest request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 

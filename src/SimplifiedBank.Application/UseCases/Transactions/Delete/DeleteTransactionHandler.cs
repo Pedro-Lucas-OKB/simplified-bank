@@ -5,18 +5,18 @@ using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Transactions.Delete;
 
-public class DeleteHandler : IRequestHandler<DeleteRequest, TransactionResponse>
+public class DeleteTransactionHandler : IRequestHandler<DeleteTransactionRequest, TransactionResponse>
 {
     private readonly ITransactionRepository _transactionRepository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public DeleteHandler(ITransactionRepository transactionRepository, IUnitOfWork unitOfWork)
+    public DeleteTransactionHandler(ITransactionRepository transactionRepository, IUnitOfWork unitOfWork)
     {
         _transactionRepository = transactionRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<TransactionResponse> Handle(DeleteRequest request, CancellationToken cancellationToken)
+    public async Task<TransactionResponse> Handle(DeleteTransactionRequest request, CancellationToken cancellationToken)
     {
         var transaction = await _transactionRepository.GetByIdAsync(request.Id, cancellationToken);
 

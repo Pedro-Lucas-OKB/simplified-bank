@@ -4,7 +4,7 @@ using SimplifiedBank.Application.Shared.Responses;
 
 namespace SimplifiedBank.Application.UseCases.Transactions.GetAll;
 
-public class GetTransactionsBySenderOrReceiverRequest : IHasGuid, IRequest<List<TransactionResponse>>
+public sealed record GetTransactionsByReceiverRequest : IHasGuid, IRequest<List<TransactionResponse>>
 {
-    public Guid Id { get; }
+    public Guid Id { get; init; }
 }

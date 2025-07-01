@@ -6,18 +6,18 @@ using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Users.Update;
 
-public class UpdatePersonalInfoHandler : IRequestHandler<UpdatePersonalInfoRequest, UserResponse>
+public class UpdateUserPersonalInfoHandler : IRequestHandler<UpdateUserPersonalInfoRequest, UserResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdatePersonalInfoHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public UpdateUserPersonalInfoHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<UserResponse> Handle(UpdatePersonalInfoRequest request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(UpdateUserPersonalInfoRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 

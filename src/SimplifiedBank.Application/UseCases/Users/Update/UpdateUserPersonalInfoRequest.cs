@@ -6,7 +6,7 @@ using SimplifiedBank.Domain.Enums;
 
 namespace SimplifiedBank.Application.UseCases.Users.Update;
 
-public class UpdatePersonalInfoRequest : IHasGuid, IRequest<UserResponse>
+public sealed record UpdateUserPersonalInfoRequest : IHasGuid, IRequest<UserResponse>
 {
     public Guid Id { get; set; }
     public string FullName { get; set; } = string.Empty;

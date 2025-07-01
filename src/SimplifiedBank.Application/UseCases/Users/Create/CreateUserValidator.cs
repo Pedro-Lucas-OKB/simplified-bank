@@ -5,9 +5,9 @@ using SimplifiedBank.Domain.Validators;
 
 namespace SimplifiedBank.Application.UseCases.Users.Create;
 
-public class CreateValidator : AbstractValidator<CreateRequest>
+public class CreateUserValidator : AbstractValidator<CreateUserRequest>
 {
-    public CreateValidator()
+    public CreateUserValidator()
     {
         RuleFor(user => user.FullName)
             .NotEmpty()

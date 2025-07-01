@@ -5,9 +5,9 @@ using SimplifiedBank.Domain.Enums;
 
 namespace SimplifiedBank.Application.UseCases.Users.Update;
 
-public class UpdatePersonalInfoValidator : BaseEntityValidator<UpdatePersonalInfoRequest>
+public class UpdateUserPersonalInfoValidator : BaseEntityValidator<UpdateUserPersonalInfoRequest>
 {
-    public UpdatePersonalInfoValidator()
+    public UpdateUserPersonalInfoValidator()
     {
         RuleFor(user => user.FullName)
             .NotEmpty()

@@ -7,7 +7,7 @@ using SimplifiedBank.Domain.Enums;
 
 namespace SimplifiedBank.Application.UseCases.Users.Create;
 
-public class CreateRequest : IRequest<UserResponse>
+public sealed record CreateUserRequest : IRequest<UserResponse>
 {
     public string FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -16,17 +16,17 @@ public class CreateRequest : IRequest<UserResponse>
     public EUserType Type { get; set; }
     
     /// <summary>
-    /// Mapeamento nativo de CreateRequest para User
+    /// Mapeamento nativo de CreateTransactionRequest para User
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="userRequest"></param>
     /// <returns></returns>
-    public static implicit operator User(CreateRequest request)
+    public static implicit operator User(CreateUserRequest userRequest)
     {
         return User.Create(
-            request.FullName, 
-            request.Email, 
-            request.Password, 
-            request.Document, 
-            request.Type);
+            userRequest.FullName, 
+            userRequest.Email, 
+            userRequest.Password, 
+            userRequest.Document, 
+            userRequest.Type);
     }
 }

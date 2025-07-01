@@ -3,9 +3,9 @@ using SimplifiedBank.Application.Shared.Requests;
 using SimplifiedBank.Application.Shared.Responses;
 using SimplifiedBank.Domain.Entities;
 
-namespace SimplifiedBank.Application.UseCases.Users.Delete;
+namespace SimplifiedBank.Application.UseCases.Users.GetById;
 
-public class DeleteRequest : IHasGuid, IRequest<UserResponse>
+public sealed record GetUserByIdRequest : IHasGuid, IRequest<UserResponse>
 {
     public Guid Id { get; init; }
 }

@@ -4,9 +4,9 @@ using SimplifiedBank.Domain;
 
 namespace SimplifiedBank.Application.UseCases.Transactions.Create;
 
-public class CreateValidator : AbstractValidator<CreateRequest>
+public class CreateTransactionValidator : AbstractValidator<CreateTransactionRequest>
 {
-    public CreateValidator()
+    public CreateTransactionValidator()
     {
         RuleFor(transaction => new { transaction.SenderId, transaction.ReceiverId })
             .NotEmpty()

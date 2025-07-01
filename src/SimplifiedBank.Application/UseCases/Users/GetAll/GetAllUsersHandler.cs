@@ -6,20 +6,20 @@ using SimplifiedBank.Domain.Interfaces;
 
 namespace SimplifiedBank.Application.UseCases.Users.GetAll;
 
-public class GetAllHandler : IRequestHandler<GetAllRequest, List<UserResponse>>
+public class GetAllUsersHandler : IRequestHandler<GetAllUsersRequest, List<UserResponse>>
 {
     private readonly IUserRepository _userRepository;
 
-    public GetAllHandler(IUserRepository userRepository)
+    public GetAllUsersHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
 
-    public async Task<List<UserResponse>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+    public async Task<List<UserResponse>> Handle(GetAllUsersRequest usersRequest, CancellationToken cancellationToken)
     {
         var users = await _userRepository.GetAllAsync(
-            (request.PageNumber - 1) * request.PageSize, 
-            request.PageSize, 
+            (usersRequest.PageNumber - 1) * usersRequest.PageSize, 
+            usersRequest.PageSize, 
             cancellationToken:cancellationToken);
 
         if (users is null)

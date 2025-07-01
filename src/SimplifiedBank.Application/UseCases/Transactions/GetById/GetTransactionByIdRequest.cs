@@ -4,7 +4,7 @@ using SimplifiedBank.Application.Shared.Responses;
 
 namespace SimplifiedBank.Application.UseCases.Transactions.GetById;
 
-public class GetByIdRequest : IHasGuid, IRequest<TransactionResponse>
+public sealed record GetTransactionByIdRequest : IHasGuid, IRequest<TransactionResponse>
 {
-    public Guid Id { get; }
+    public Guid Id { get; init; }
 }

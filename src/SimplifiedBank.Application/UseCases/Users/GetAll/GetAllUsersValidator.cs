@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace SimplifiedBank.Application.UseCases.Users.GetAll;
 
-public class GetAllValidator : AbstractValidator<GetAllRequest>
+public class GetAllUsersValidator : AbstractValidator<GetAllUsersRequest>
 {
-    public GetAllValidator()
+    public GetAllUsersValidator()
     {
         RuleFor(request => request.PageNumber)
             .GreaterThanOrEqualTo(1)
