@@ -25,7 +25,7 @@ public class GetTransactionsBySenderHandler : IRequestHandler<GetTransactionsByS
         
         var transactions = await _transactionRepository.GetBySenderIdAsync(request.Id, cancellationToken);
 
-        if (transactions is null)
+        if (!transactions.Any())
             throw new NoSentTransactionsException("Não existem transações feitas por este usuário.");
         
         return TransactionResponse.ConvertAll(transactions);

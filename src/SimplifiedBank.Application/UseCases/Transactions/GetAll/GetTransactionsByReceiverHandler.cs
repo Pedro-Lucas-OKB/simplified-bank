@@ -25,8 +25,8 @@ public class GetTransactionsByReceiverHandler : IRequestHandler<GetTransactionsB
         
         var transactions = await _transactionRepository.GetByReceiverIdAsync(request.Id, cancellationToken);
 
-        if (transactions is null)
-            throw new NoSentTransactionsException("Não existem transações recebidas por este usuário.");
+        if (!transactions.Any())
+            throw new NoReceivedTransactionsException("Não existem transações recebidas por este usuário.");
         
         return TransactionResponse.ConvertAll(transactions);
     }

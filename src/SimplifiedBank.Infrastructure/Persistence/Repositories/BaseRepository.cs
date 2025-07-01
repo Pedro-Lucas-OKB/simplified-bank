@@ -23,7 +23,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);       
     }
 
-    public async Task<List<TEntity>?> GetAllAsync(int skip = 0, int take = 30, CancellationToken cancellationToken = default)
+    public async Task<List<TEntity>> GetAllAsync(int skip = 0, int take = 30, CancellationToken cancellationToken = default)
     {
         return await Context.Set<TEntity>()
             .AsNoTracking()
@@ -34,22 +34,19 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        //entity.DateCreated = DateTime.UtcNow;
         await Context.AddAsync(entity, cancellationToken);
         return entity;       
     }
 
-    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Context.Update(entity);
-
-        return entity;
+        return Task.FromResult(entity);
     }
 
-    public async Task<TEntity> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public Task<TEntity> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Context.Remove(entity);
-        
-        return entity;       
+        return Task.FromResult(entity);       
     }
 }

@@ -11,7 +11,7 @@ public class TransactionRepository : BaseRepository<Transaction>, ITransactionRe
     {
     }
 
-    public async Task<List<Transaction>?> GetBySenderIdAsync(Guid senderId, CancellationToken cancellationToken)
+    public async Task<List<Transaction>> GetBySenderIdAsync(Guid senderId, CancellationToken cancellationToken)
     {
         return await Context.Transactions
             .AsNoTracking()
@@ -19,7 +19,7 @@ public class TransactionRepository : BaseRepository<Transaction>, ITransactionRe
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<Transaction>?> GetByReceiverIdAsync(Guid receiverId, CancellationToken cancellationToken)
+    public async Task<List<Transaction>> GetByReceiverIdAsync(Guid receiverId, CancellationToken cancellationToken)
     {
         return await Context.Transactions
             .AsNoTracking()
