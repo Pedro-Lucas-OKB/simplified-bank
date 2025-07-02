@@ -16,10 +16,8 @@ public sealed record CreateTransactionRequest : IRequest<TransactionResponse>
     /// <param name="request"></param>
     /// <returns></returns>
     public static implicit operator Transaction(CreateTransactionRequest request)
-    {
-        return Transaction.Create(
+        => Transaction.Create(
             request.SenderId,
             request.ReceiverId,
             request.Value);
-    }
 }

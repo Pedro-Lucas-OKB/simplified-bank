@@ -3,7 +3,7 @@ using SimplifiedBank.Domain.Enums;
 
 namespace SimplifiedBank.Application.Shared.Responses;
 
-public sealed record UserResponse
+public record UserResponse
 {
     public Guid Id { get; set; }
     public string FullName { get; set; } = string.Empty;
@@ -19,8 +19,7 @@ public sealed record UserResponse
     /// <param name="user"></param>
     /// <returns></returns>
     public static implicit operator UserResponse(User user)
-    {
-        return new UserResponse
+        => new()
         {
             Id = user.Id,
             FullName = user.FullName,
@@ -29,7 +28,6 @@ public sealed record UserResponse
             Balance = user.Balance,
             Type = user.Type
         };
-    }
     
     /// <summary>
     /// Converte uma lista de Users em uma lista de UserResponse

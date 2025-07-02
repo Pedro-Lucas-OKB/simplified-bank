@@ -14,19 +14,17 @@ public sealed record CreateUserRequest : IRequest<UserResponse>
     public string Password { get; set; } = string.Empty;
     public string Document { get; set; } = string.Empty;
     public EUserType Type { get; set; }
-    
+
     /// <summary>
     /// Mapeamento nativo de CreateTransactionRequest para User
     /// </summary>
     /// <param name="userRequest"></param>
     /// <returns></returns>
     public static implicit operator User(CreateUserRequest userRequest)
-    {
-        return User.Create(
-            userRequest.FullName, 
-            userRequest.Email, 
-            userRequest.Password, 
-            userRequest.Document, 
+        => User.Create(
+            userRequest.FullName,
+            userRequest.Email,
+            userRequest.Password,
+            userRequest.Document,
             userRequest.Type);
-    }
 }
