@@ -2,7 +2,7 @@ using SimplifiedBank.Domain.Entities;
 
 namespace SimplifiedBank.Application.Shared.Responses;
 
-public sealed record TransactionResponse()
+public sealed record TransactionResponse
 {
     public Guid Id { get; set; }
     public Guid SenderId { get; set; }

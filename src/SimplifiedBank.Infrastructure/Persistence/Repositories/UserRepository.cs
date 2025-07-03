@@ -25,17 +25,36 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         if (string.IsNullOrWhiteSpace(document))
             return null;
-        
+
         return await Context.Users
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Document == document, cancellationToken);       
+            .FirstOrDefaultAsync(x => x.Document == document, cancellationToken);
     }
 
-    public async Task<bool> ExistsByEmailOrDocumentAsync(string email, string document, CancellationToken cancellationToken)
+    public async Task<bool> ExistsByEmailOrDocumentAsync(string email, string document,
+        CancellationToken cancellationToken)
     {
         email = email.Trim();
         document = User.NormalizeDocument(document);
-        
-        return await Context.Users.AnyAsync(x => x.Email == email || x.Document == document, cancellationToken);       
+
+        return await Context.Users.AnyAsync(x => x.Email == email || x.Document == document, cancellationToken);
+    }
+
+    public async Task<User?> GetUserWithSentTransactions(Guid userId, CancellationToken cancellationToken)
+    {
+        return await Context.Users
+            .AsNoTracking()
+            .Include(u => u.TransactionsSent)
+            .ThenInclude(t => t.Receiver)
+            .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+    }
+
+    public async Task<User?> GetUserWithReceivedTransactions(Guid userId, CancellationToken cancellationToken)
+    {
+        return await Context.Users
+            .AsNoTracking()
+            .Include(u => u.TransactionsReceived)
+            .ThenInclude(t => t.Sender)
+            .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
     }
 }

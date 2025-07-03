@@ -8,6 +8,8 @@ using SimplifiedBank.Application.UseCases.Users.Create;
 using SimplifiedBank.Application.UseCases.Users.Delete;
 using SimplifiedBank.Application.UseCases.Users.GetAll;
 using SimplifiedBank.Application.UseCases.Users.GetById;
+using SimplifiedBank.Application.UseCases.Users.GetUserTransactions.Received;
+using SimplifiedBank.Application.UseCases.Users.GetUserTransactions.Sent;
 using SimplifiedBank.Application.UseCases.Users.Update;
 using SimplifiedBank.Domain.Entities;
 using SimplifiedBank.Domain.Enums;
@@ -196,6 +198,80 @@ public class UsersController : ControllerBase
                 Property = error.PropertyName,
                 Message = error.ErrorMessage
             }));
+        }
+        catch
+        {
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [SwaggerOperation(Summary = "Retorna as transações enviadas por um usuário a partir do seu ID.")]
+    [HttpGet("get-info/{id:guid}/transactions/sent")]
+    public async Task<IActionResult> GetUserSentTransactionsAsync(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var request = new GetUserSentTransactionsRequest
+            {
+                Id = id
+            };
+            var response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Errors.Select(error => new
+            {
+                Property = error.PropertyName,
+                Message = error.ErrorMessage
+            }));
+        }
+        catch (UserNotFoundException e)
+        {
+            return StatusCode(404, e.Message);
+        }
+        catch (NoSentTransactionsException e)
+        {
+            return StatusCode(404, e.Message);       
+        }
+        catch
+        {
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [SwaggerOperation(Summary = "Retorna as transações recebidas por um usuário a partir do seu ID.")]
+    [HttpGet("get-info/{id:guid}/transactions/received")]
+    public async Task<IActionResult> GetUserReceivedTransactionsAsync(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var request = new GetUserReceivedTransactionsRequest
+            {
+                Id = id
+            };
+            var response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Errors.Select(error => new
+            {
+                Property = error.PropertyName,
+                Message = error.ErrorMessage
+            }));
+        }
+        catch (UserNotFoundException e)
+        {
+            return StatusCode(404, e.Message);
+        }
+        catch (NoReceivedTransactionsException e)
+        {
+            return StatusCode(404, e.Message);       
         }
         catch
         {

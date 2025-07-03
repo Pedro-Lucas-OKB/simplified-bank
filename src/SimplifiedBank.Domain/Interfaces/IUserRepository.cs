@@ -8,4 +8,7 @@ public interface IUserRepository : IBaseRepository<User>
     Task<User?> GetByDocumentAsync(string document, CancellationToken cancellationToken); 
     
     Task<bool> ExistsByEmailOrDocumentAsync(string email, string document, CancellationToken cancellationToken);
+
+    Task<User?> GetUserWithSentTransactions(Guid userId, CancellationToken cancellationToken);
+    Task<User?> GetUserWithReceivedTransactions(Guid userId, CancellationToken cancellationToken);
 }
