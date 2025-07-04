@@ -6,9 +6,9 @@ namespace SimplifiedBank.Application.UseCases.Transactions.Create;
 
 public sealed record CreateTransactionRequest : IRequest<TransactionResponse>
 {
-    public Guid SenderId { get; set; }
-    public Guid ReceiverId { get; set; }
-    public decimal Value { get; set; }
+    public Guid SenderId { get; init; }
+    public Guid ReceiverId { get; init; }
+    public decimal Value { get; init; }
 
     /// <summary>
     /// Mapeamento nativo de CreateTransactionRequest para Transaction

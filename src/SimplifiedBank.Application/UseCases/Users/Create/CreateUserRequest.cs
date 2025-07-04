@@ -9,11 +9,11 @@ namespace SimplifiedBank.Application.UseCases.Users.Create;
 
 public sealed record CreateUserRequest : IRequest<UserResponse>
 {
-    public string FullName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    public string Document { get; set; } = string.Empty;
-    public EUserType Type { get; set; }
+    public string FullName { get; init; } = string.Empty;
+    public string Email { get; init; } = string.Empty;
+    public string Password { get; init; } = string.Empty;
+    public string Document { get; init; } = string.Empty;
+    public EUserType Type { get; init; }
 
     /// <summary>
     /// Mapeamento nativo de CreateTransactionRequest para User

@@ -24,12 +24,12 @@ public class TransactionsController : ControllerBase
     [SwaggerOperation(Summary = "Cria uma nova transação.")]
     [HttpPost("create")]
     public async Task<IActionResult> CreateAsync(
-        [FromBody] CreateTransactionRequest transactionRequest,
+        [FromBody] CreateTransactionRequest request,
         CancellationToken cancellationToken)
     {
         try
         {
-            var response = await _mediator.Send(transactionRequest, cancellationToken);
+            var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
         catch (ValidationException e)

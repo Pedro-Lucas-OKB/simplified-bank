@@ -4,11 +4,11 @@ namespace SimplifiedBank.Application.Shared.Responses;
 
 public sealed record TransactionResponse
 {
-    public Guid Id { get; set; }
-    public Guid SenderId { get; set; }
-    public Guid ReceiverId { get; set; }
-    public decimal Value { get; set; }
-    public DateTime Date { get; set; }
+    public Guid Id { get; init; }
+    public Guid SenderId { get; init; }
+    public Guid ReceiverId { get; init; }
+    public decimal Value { get; init; }
+    public DateTime Date { get; init; }
 
     /// <summary>
     /// Mapeamento nativo de Transaction para TransactionResponse
