@@ -10,7 +10,7 @@ public abstract class BaseEntity
 
     public Guid Id { get; }
     public DateTime DateCreated { get; }
-    public DateTime? DateModified { get; private set;}
+    public DateTime? DateModified { get; private set; }
     
     protected void UpdateDateModified()
     {

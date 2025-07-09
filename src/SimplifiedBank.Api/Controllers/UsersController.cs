@@ -232,6 +232,10 @@ public class UsersController : ControllerBase
         {
             return StatusCode(404, e.Message);
         }
+        catch (ShopkeeperCannotTransferException e)
+        {
+            return StatusCode(400, e.Message);
+        }
         catch (NoSentTransactionsException e)
         {
             return StatusCode(404, e.Message);       

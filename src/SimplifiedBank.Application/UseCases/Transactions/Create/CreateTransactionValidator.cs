@@ -23,7 +23,7 @@ public class CreateTransactionValidator : AbstractValidator<CreateTransactionReq
         RuleFor(transaction => transaction.Value)
             .NotEmpty()
             .WithMessage("O valor da transferência não pode ser vazio.")
-            .GreaterThan(DomainConfiguration.MinTransactionValue)
+            .GreaterThanOrEqualTo(DomainConfiguration.MinTransactionValue)
             .WithMessage($"O valor não pode ser menor que {DomainConfiguration.MinTransactionValue}.")
             .LessThanOrEqualTo(DomainConfiguration.MaxTransactionValue)
             .WithMessage($"O valor da transação não pode ser maior que {DomainConfiguration.MaxTransactionValue}.");

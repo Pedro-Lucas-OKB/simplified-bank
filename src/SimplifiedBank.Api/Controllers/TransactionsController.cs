@@ -44,6 +44,10 @@ public class TransactionsController : ControllerBase
         {
             return StatusCode(400, e.Message);
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(400, "Alguns dados podem ter sido alterados desde o último carregamento. Tente novamente.");
+        }
         catch (DbUpdateException e)
         {
             return StatusCode(400, e.Message);
@@ -119,6 +123,10 @@ public class TransactionsController : ControllerBase
         catch (UserNotFoundException e)
         {
             return StatusCode(404, e.Message);
+        }
+        catch (ShopkeeperCannotTransferException e)
+        {
+            return StatusCode(400, e.Message);
         }
         catch (NoSentTransactionsException e)
         {

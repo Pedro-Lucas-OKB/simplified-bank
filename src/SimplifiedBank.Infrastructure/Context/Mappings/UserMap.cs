@@ -26,6 +26,10 @@ public class UserMap : IEntityTypeConfiguration<User>
             .HasColumnName("DateModified")
             .HasColumnType("DATETIME");
         
+        builder.Property(x => x.RowVersion)
+            .HasColumnName("RowVersion")
+            .IsRowVersion(); // Fazendo concurrency check
+        
         builder.Property(x => x.FullName)
             .IsRequired()
             .HasColumnName("FullName")

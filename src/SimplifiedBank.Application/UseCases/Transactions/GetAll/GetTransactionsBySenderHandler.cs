@@ -1,5 +1,6 @@
 using MediatR;
 using SimplifiedBank.Application.Shared.Responses;
+using SimplifiedBank.Domain.Enums;
 using SimplifiedBank.Domain.Exceptions;
 using SimplifiedBank.Domain.Interfaces;
 
@@ -22,6 +23,9 @@ public class GetTransactionsBySenderHandler : IRequestHandler<GetTransactionsByS
         
         if (user is null)
             throw new UserNotFoundException("Usuário não pôde ser encontrado.");
+        
+        if (user.Type == EUserType.Shopkeeper)
+            throw new ShopkeeperCannotTransferException("Apenas usuários comuns podem enviar transferências.");
         
         var transactions = await _transactionRepository.GetBySenderIdAsync(request.Id, cancellationToken);
 

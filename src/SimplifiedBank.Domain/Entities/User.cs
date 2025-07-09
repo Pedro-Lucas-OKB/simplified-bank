@@ -14,6 +14,7 @@ public class User : BaseEntity
     public EUserType Type { get; private set; }
     public List<Transaction> TransactionsSent { get; private set; } = null!;
     public List<Transaction> TransactionsReceived { get; private set; } = null!;
+    public byte[] RowVersion { get; private set; } = null!; // Propriedade para lidar com concorrência no DB
 
     private User() : base(Guid.NewGuid(), DateTime.UtcNow)
     {
