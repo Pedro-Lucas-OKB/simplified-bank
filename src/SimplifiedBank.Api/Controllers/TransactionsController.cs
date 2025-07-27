@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SimplifiedBank.Application.Shared.Exceptions;
 using SimplifiedBank.Application.UseCases.Transactions.Create;
 using SimplifiedBank.Application.UseCases.Transactions.Delete;
 using SimplifiedBank.Application.UseCases.Transactions.GetAll;
@@ -43,6 +44,10 @@ public class TransactionsController : ControllerBase
         catch (DomainException e)
         {
             return StatusCode(400, e.Message);
+        }
+        catch (TransactionNotAuthorizedException e)
+        {
+            return StatusCode(403, e.Message);
         }
         catch (DbUpdateConcurrencyException)
         {
