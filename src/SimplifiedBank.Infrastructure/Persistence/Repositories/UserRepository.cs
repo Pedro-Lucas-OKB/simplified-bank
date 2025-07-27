@@ -44,7 +44,9 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         return await Context.Users
             .AsNoTracking()
-            .Include(u => u.TransactionsSent)
+            .Include(u
+                => u.TransactionsSent
+                    .OrderByDescending(t => t.DateCreated))
             .ThenInclude(t => t.Receiver)
             .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
     }
@@ -53,7 +55,9 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         return await Context.Users
             .AsNoTracking()
-            .Include(u => u.TransactionsReceived)
+            .Include(u 
+                => u.TransactionsReceived
+                    .OrderByDescending(t => t.DateCreated))
             .ThenInclude(t => t.Sender)
             .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
     }

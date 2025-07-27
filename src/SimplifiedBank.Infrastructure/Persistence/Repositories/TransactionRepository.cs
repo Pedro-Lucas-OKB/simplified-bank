@@ -16,6 +16,7 @@ public class TransactionRepository : BaseRepository<Transaction>, ITransactionRe
         return await Context.Transactions
             .AsNoTracking()
             .Where(x => x.SenderId == senderId)
+            .OrderByDescending(x => x.DateCreated)
             .ToListAsync(cancellationToken);
     }
 
@@ -24,6 +25,7 @@ public class TransactionRepository : BaseRepository<Transaction>, ITransactionRe
         return await Context.Transactions
             .AsNoTracking()
             .Where(x => x.ReceiverId == receiverId)
+            .OrderByDescending(x => x.DateCreated)
             .ToListAsync(cancellationToken);
     }
 }
