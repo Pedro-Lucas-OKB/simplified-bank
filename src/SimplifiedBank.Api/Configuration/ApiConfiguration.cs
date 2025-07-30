@@ -1,5 +1,9 @@
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SimplifiedBank.Infrastructure;
 
 namespace SimplifiedBank.Api.Configuration;
 
@@ -61,7 +65,6 @@ public static class ApiConfiguration
             });
         }
         
-        app.MapControllers();
         app.UseHttpsRedirection();
         
         app.UseCors(builder => builder
@@ -69,6 +72,31 @@ public static class ApiConfiguration
             .AllowAnyMethod()
             .AllowAnyHeader());
         
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
+        
         return app;   
+    }
+
+    public static void ConfigureAuthentication(WebApplicationBuilder builder)
+    {
+        InfrastructureConfiguration.JwtKey = builder.Configuration.GetValue<string>("JwtKey") ?? string.Empty;
+        var key = Encoding.ASCII.GetBytes(InfrastructureConfiguration.JwtKey);
+
+        builder.Services.AddAuthentication(x =>
+        {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(x =>
+        {
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+            };
+        });
     }
 }
