@@ -7,5 +7,5 @@ public class SecureIdentityPasswordHasher : IPasswordHasher
 {
     public string Hash(string password) => PasswordHasher.Hash(password);
 
-    public bool Verify(string password, string hashedPassword) => PasswordHasher.Verify(password, hashedPassword);
+    public bool Verify(string password, string hashedPassword) => PasswordHasher.Verify(hashedPassword, password);
 }

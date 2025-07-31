@@ -1,9 +1,12 @@
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using SimplifiedBank.Application.UseCases.Users.Login;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SimplifiedBank.Api.Dtos.Users;
 using SimplifiedBank.Application.Shared;
+using SimplifiedBank.Application.Shared.Exceptions;
 using SimplifiedBank.Application.UseCases.Users.Create;
 using SimplifiedBank.Application.UseCases.Users.Delete;
 using SimplifiedBank.Application.UseCases.Users.GetAll;
@@ -20,6 +23,7 @@ namespace SimplifiedBank.Api.Controllers;
 
 [ApiController]
 [Route("v1/[controller]")]
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -30,7 +34,8 @@ public class UsersController : ControllerBase
     }
 
     [SwaggerOperation(Summary = "Cria um novo usuário (Comum ou Lojista).")]
-    [HttpPost("create")]
+    [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> CreateAsync(
         [FromBody] CreateUserRequest request,
         CancellationToken cancellationToken)
@@ -55,6 +60,40 @@ public class UsersController : ControllerBase
         catch (DbUpdateException e)
         {
             return StatusCode(400, e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, $"Internal Server Error ({e.Message})");
+        }
+    }
+
+    [SwaggerOperation(Summary = "Realiza o login a partir de um e-mail e uma senha.")]
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(
+        [FromBody] LoginRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Errors.Select(error => new
+            {
+                Property = error.PropertyName,
+                Message = error.ErrorMessage
+            }));
+        }
+        catch (UserNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (WrongPasswordException e)
+        {
+            return Unauthorized(e.Message);
         }
         catch (Exception e)
         {
@@ -104,43 +143,6 @@ public class UsersController : ControllerBase
         }
     }
 
-    [SwaggerOperation(Summary = "Exclui um usuário cadastrado a partir do seu ID.")]
-    [HttpDelete("delete/{id:guid}")]
-    public async Task<IActionResult> DeleteAsync(
-        [FromRoute] Guid id,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            var request = new DeleteUserRequest
-            {
-                Id = id
-            };
-            var response = await _mediator.Send(request, cancellationToken);
-            return Ok(response);
-        }
-        catch (ValidationException e)
-        {
-            return BadRequest(e.Errors.Select(error => new
-            {
-                Property = error.PropertyName,
-                Message = error.ErrorMessage
-            }));
-        }
-        catch (UserNotFoundException e)
-        {
-            return StatusCode(404, e.Message);
-        }
-        catch (DbUpdateException e)
-        {
-            return StatusCode(400, e.Message);
-        }
-        catch
-        {
-            return StatusCode(500, "Internal Server Error");
-        }
-    }
-
     [SwaggerOperation(Summary = "Retorna os dados de um usuário a partir do seu ID.")]
     [HttpGet("get-info/{id:guid}")]
     public async Task<IActionResult> GetByIdAsync(
@@ -174,37 +176,6 @@ public class UsersController : ControllerBase
         }
     }
 
-    [SwaggerOperation(Summary = "Retorna uma lista dos usuários cadastrados no sistema.")]
-    [HttpGet]
-    public async Task<IActionResult> GetAllAsync(
-        CancellationToken cancellationToken,
-        [FromQuery] int pageNumber = PaginationSettings.DefaultPageNumber,
-        [FromQuery] int pageSize = PaginationSettings.DefaultPageSize)
-    {
-        try
-        {
-            var request = new GetAllUsersRequest
-            {
-                PageSize = pageSize,
-                PageNumber = pageNumber
-            };
-            var response = await _mediator.Send(request, cancellationToken);
-            return Ok(response);
-        }
-        catch (ValidationException e)
-        {
-            return BadRequest(e.Errors.Select(error => new
-            {
-                Property = error.PropertyName,
-                Message = error.ErrorMessage
-            }));
-        }
-        catch
-        {
-            return StatusCode(500, "Internal Server Error");
-        }
-    }
-    
     [SwaggerOperation(Summary = "Retorna as transações enviadas por um usuário a partir do seu ID.")]
     [HttpGet("get-info/{id:guid}/transactions/sent")]
     public async Task<IActionResult> GetUserSentTransactionsAsync(
@@ -238,14 +209,14 @@ public class UsersController : ControllerBase
         }
         catch (NoSentTransactionsException e)
         {
-            return StatusCode(404, e.Message);       
+            return StatusCode(404, e.Message);
         }
         catch
         {
             return StatusCode(500, "Internal Server Error");
         }
     }
-    
+
     [SwaggerOperation(Summary = "Retorna as transações recebidas por um usuário a partir do seu ID.")]
     [HttpGet("get-info/{id:guid}/transactions/received")]
     public async Task<IActionResult> GetUserReceivedTransactionsAsync(
@@ -275,7 +246,7 @@ public class UsersController : ControllerBase
         }
         catch (NoReceivedTransactionsException e)
         {
-            return StatusCode(404, e.Message);       
+            return StatusCode(404, e.Message);
         }
         catch
         {
