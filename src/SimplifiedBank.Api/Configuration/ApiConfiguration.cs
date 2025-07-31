@@ -16,7 +16,7 @@ public static class ApiConfiguration
             {
                 // Evita loops infinitos
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                
+
                 // Ignora propriedades com valores nulos
                 x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
@@ -47,11 +47,36 @@ public static class ApiConfiguration
                     Url = new Uri("https://opensource.org/licenses/MIT")
                 }*/
             });
+
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer", 
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+            });
+            
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
         });
-        
+
         return services;
     }
-    
+
     // App
     public static WebApplication ConfigureApp(this WebApplication app)
     {
@@ -64,19 +89,19 @@ public static class ApiConfiguration
                 c.RoutePrefix = string.Empty;
             });
         }
-        
+
         app.UseHttpsRedirection();
-        
+
         app.UseCors(builder => builder
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
-        
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-        
-        return app;   
+
+        return app;
     }
 
     public static void ConfigureAuthentication(WebApplicationBuilder builder)
