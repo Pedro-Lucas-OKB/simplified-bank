@@ -27,7 +27,11 @@ public abstract class CpfValidator
             multiplier--;
         }
 
-        if (11 - (sum % 11) != digit1)
+        int rest = sum % 11;
+
+        if (rest < 2 && digit1 != 0)
+            return false;
+        else if (rest >= 2 && (11 - rest != digit1))
             return false;
         
         multiplier = 11;
@@ -39,7 +43,11 @@ public abstract class CpfValidator
             multiplier--;
         }
         
-        if (11 - (sum % 11) != digit2)
+        rest = sum % 11;
+        
+        if (rest < 2 && digit2 != 0)
+            return false;
+        else if (rest >= 2 && (11 - rest != digit2))
             return false;
         
         return true;
