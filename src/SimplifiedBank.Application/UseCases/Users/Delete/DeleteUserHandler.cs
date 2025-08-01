@@ -16,9 +16,9 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, UserResponse
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<UserResponse> Handle(DeleteUserRequest userRequest, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(userRequest.Id, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (user is null)
             throw new UserNotFoundException("Usuário não pôde ser encontrado.");

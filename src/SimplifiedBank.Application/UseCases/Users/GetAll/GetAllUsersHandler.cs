@@ -15,11 +15,11 @@ public class GetAllUsersHandler : IRequestHandler<GetAllUsersRequest, List<UserR
         _userRepository = userRepository;
     }
 
-    public async Task<List<UserResponse>> Handle(GetAllUsersRequest usersRequest, CancellationToken cancellationToken)
+    public async Task<List<UserResponse>> Handle(GetAllUsersRequest request, CancellationToken cancellationToken)
     {
         var users = await _userRepository.GetAllAsync(
-            (usersRequest.PageNumber - 1) * usersRequest.PageSize, 
-            usersRequest.PageSize, 
+            (request.PageNumber - 1) * request.PageSize, 
+            request.PageSize, 
             cancellationToken:cancellationToken);
 
         if (users is null)
