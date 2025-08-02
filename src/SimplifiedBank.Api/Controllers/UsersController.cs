@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,9 +22,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace SimplifiedBank.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("v1/[controller]")]
-[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -33,9 +34,9 @@ public class UsersController : ControllerBase
         _mediator = mediator;
     }
 
+    [AllowAnonymous]
     [SwaggerOperation(Summary = "Cria um novo usuário (Comum ou Lojista).")]
     [HttpPost("register")]
-    [AllowAnonymous]
     public async Task<IActionResult> CreateAsync(
         [FromBody] CreateUserRequest request,
         CancellationToken cancellationToken)
@@ -67,9 +68,9 @@ public class UsersController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [SwaggerOperation(Summary = "Realiza o login a partir de um e-mail e uma senha.")]
     [HttpPost("login")]
-    [AllowAnonymous]
     public async Task<IActionResult> Login(
         [FromBody] LoginRequest request,
         CancellationToken cancellationToken)
@@ -101,22 +102,28 @@ public class UsersController : ControllerBase
         }
     }
 
-    [SwaggerOperation(Summary = "Atualiza os dados pessoais (nome e e-mail) de um usuário a partir do seu ID.")]
-    [HttpPut("update/{type:int:range(0,1)}/{id:guid}")]
-    public async Task<IActionResult> UpdatePersonalInfoAsync(
-        [FromRoute] int type,
-        [FromRoute] Guid id,
+    [SwaggerOperation(Summary = "Atualiza os dados pessoais (nome e e-mail) do usuário atualmente logado.")]
+    [HttpPut("me/update-info")]
+    public async Task<IActionResult> UpdateCurrentUserPersonalInfoAsync(
         [FromBody] UpdatePersonalInfoDto updateDto,
         CancellationToken cancellationToken)
     {
         try
         {
+            var userId = GetCurrentUserId();
+            
+            if (userId == Guid.Empty)
+                return Unauthorized("Não foi possível recuperar o ID do usuário. Refaça o login e tente novamente.");
+
+            // Convertendo string para EUserType
+            Enum.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value, out EUserType userType);
+            
             var request = new UpdateUserPersonalInfoRequest
             {
-                Id = id,
+                Id = userId,
                 FullName = updateDto.FullName,
                 Email = updateDto.Email,
-                Type = (EUserType)type
+                Type = userType
             };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
@@ -143,17 +150,21 @@ public class UsersController : ControllerBase
         }
     }
 
-    [SwaggerOperation(Summary = "Retorna os dados de um usuário a partir do seu ID.")]
-    [HttpGet("get-info/{id:guid}")]
-    public async Task<IActionResult> GetByIdAsync(
-        [FromRoute] Guid id,
+    [SwaggerOperation(Summary = "Retorna os dados do usuário atualmente logado (Comum ou Lojista).")]
+    [HttpGet("me/get-info")]
+    public async Task<IActionResult> GetCurrentUserInfoAsync(
         CancellationToken cancellationToken)
     {
         try
         {
+            var userId = GetCurrentUserId();
+            
+            if (userId == Guid.Empty)
+                return Unauthorized("Não foi possível recuperar o ID do usuário. Refaça o login e tente novamente.");
+            
             var request = new GetUserByIdRequest
             {
-                Id = id
+                Id = userId
             };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
@@ -176,17 +187,22 @@ public class UsersController : ControllerBase
         }
     }
 
-    [SwaggerOperation(Summary = "Retorna as transações enviadas por um usuário a partir do seu ID.")]
-    [HttpGet("get-info/{id:guid}/transactions/sent")]
-    public async Task<IActionResult> GetUserSentTransactionsAsync(
-        [FromRoute] Guid id,
+    [Authorize(Roles = "Common, Admin")]
+    [SwaggerOperation(Summary = "Retorna as transações enviadas pelo usuário atualmente logado (somente Comum).")]
+    [HttpGet("me/get-info/transactions/sent")]
+    public async Task<IActionResult> GetCurrentUserSentTransactionsAsync(
         CancellationToken cancellationToken)
     {
         try
         {
+            var userId = GetCurrentUserId();
+
+            if (userId == Guid.Empty)
+                return Unauthorized("Não foi possível recuperar o ID do usuário. Refaça o login e tente novamente.");
+            
             var request = new GetUserSentTransactionsRequest
             {
-                Id = id
+                Id = userId
             };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
@@ -217,17 +233,21 @@ public class UsersController : ControllerBase
         }
     }
 
-    [SwaggerOperation(Summary = "Retorna as transações recebidas por um usuário a partir do seu ID.")]
-    [HttpGet("get-info/{id:guid}/transactions/received")]
-    public async Task<IActionResult> GetUserReceivedTransactionsAsync(
-        [FromRoute] Guid id,
+    [SwaggerOperation(Summary = "Retorna as transações recebidas pelo usuário atualmente logado (Comum ou Lojista).")]
+    [HttpGet("me/get-info/transactions/received")]
+    public async Task<IActionResult> GetCurrentUserReceivedTransactionsAsync(
         CancellationToken cancellationToken)
     {
         try
         {
+            var userId = GetCurrentUserId();
+            
+            if (userId == Guid.Empty)
+                return Unauthorized("Não foi possível recuperar o ID do usuário. Refaça o login e tente novamente.");
+            
             var request = new GetUserReceivedTransactionsRequest
             {
-                Id = id
+                Id = userId
             };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
@@ -252,5 +272,14 @@ public class UsersController : ControllerBase
         {
             return StatusCode(500, "Internal Server Error");
         }
+    }
+    
+    /// <summary>
+    /// Função que retorna o ID do usuário atualmente logado
+    /// </summary>
+    /// <returns></returns>
+    private Guid GetCurrentUserId()
+    {
+        return Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? Guid.Empty.ToString());
     }
 }
