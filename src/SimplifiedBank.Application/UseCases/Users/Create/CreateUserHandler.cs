@@ -19,17 +19,17 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, UserResponse
         _passwordHasher = passwordHasher;       
     }
 
-    public async Task<UserResponse> Handle(CreateUserRequest userRequest, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        if (await _userRepository.ExistsByEmailOrDocumentAsync(userRequest.Email, userRequest.Document, cancellationToken))
+        if (await _userRepository.ExistsByEmailOrDocumentAsync(request.Email, request.Document, cancellationToken))
             throw new UserAlreadyExistsException("Já existe um usuário com esse email ou documento.");
         
         var user = User.Create(
-            userRequest.FullName,
-            userRequest.Email,
-            _passwordHasher.Hash(userRequest.Password),
-            userRequest.Document,
-            userRequest.Type); 
+            request.FullName,
+            request.Email,
+            _passwordHasher.Hash(request.Password),
+            request.Document,
+            request.Type); 
         
         await _userRepository.CreateAsync(user, cancellationToken);;
         await _unitOfWork.CommitAsync(cancellationToken);

@@ -14,7 +14,7 @@ public class TransactionAuthorizerService : ITransactionAuthorizerService
 
     public async Task<bool> IsAuthorizedAsync()
     {
-        var response = await _httpClient.GetAsync(InfrastructureConfiguration.AuthorizationUrl);
+        var response = await _httpClient.GetAsync(InfrastructureConfiguration.TransactionAuthorizationUrl);
 
         var authorize =
             JsonConvert.DeserializeObject<TransactionAuthorizerOut>(await response.Content.ReadAsStringAsync()) ??

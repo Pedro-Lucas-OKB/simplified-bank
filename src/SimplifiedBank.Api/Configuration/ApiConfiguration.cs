@@ -1,5 +1,9 @@
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SimplifiedBank.Infrastructure;
 
 namespace SimplifiedBank.Api.Configuration;
 
@@ -12,7 +16,7 @@ public static class ApiConfiguration
             {
                 // Evita loops infinitos
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                
+
                 // Ignora propriedades com valores nulos
                 x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
@@ -43,11 +47,36 @@ public static class ApiConfiguration
                     Url = new Uri("https://opensource.org/licenses/MIT")
                 }*/
             });
+
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer", 
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+            });
+            
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
         });
-        
+
         return services;
     }
-    
+
     // App
     public static WebApplication ConfigureApp(this WebApplication app)
     {
@@ -60,15 +89,39 @@ public static class ApiConfiguration
                 c.RoutePrefix = string.Empty;
             });
         }
-        
-        app.MapControllers();
+
         app.UseHttpsRedirection();
-        
+
         app.UseCors(builder => builder
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
-        
-        return app;   
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        return app;
+    }
+
+    public static void ConfigureAuthentication(WebApplicationBuilder builder)
+    {
+        InfrastructureConfiguration.JwtKey = builder.Configuration.GetValue<string>("JwtKey") ?? string.Empty;
+        var key = Encoding.ASCII.GetBytes(InfrastructureConfiguration.JwtKey);
+
+        builder.Services.AddAuthentication(x =>
+        {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(x =>
+        {
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+            };
+        });
     }
 }

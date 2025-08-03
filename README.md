@@ -64,9 +64,10 @@ O projeto aplica **_design patterns_** e outras boas práticas de desenvolviment
 - [x] Validações de unicidade de usuário
 - [x] Bônus de novo usuário
 - [x] Validação das regras de Transação
-- [ ] Serviços externos de autorização e notificação (a implementar)
+- [x] Serviços externos de autorização de transação
+- [ ] Serviços externos de notificação (a implementar)
 - [x] Segurança do saldo dos usuários contra inconsistência e concorrência
-- [ ] Autenticação JWT (planejado)
+- [x] Autenticação JWT Bearer
 - [ ] Dockerização (planejado)
 
 ---

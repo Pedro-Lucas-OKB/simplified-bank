@@ -39,9 +39,9 @@ public class CreateUserValidator : AbstractValidator<CreateUserRequest>
                 $"A senha deve conter, no máximo, {DomainConfiguration.UserPasswordMaximumLength} caracteres.");
 
         RuleFor(user => user.Type)
-            .IsInEnum()
+            .Must(type => type == EUserType.Common || type == EUserType.Shopkeeper)
             .WithMessage("O tipo de usuário informado não é válido. Indique o tipo de usuário (Comum ou Lojista).");
-
+        
         RuleFor(user => user.Document)
             .NotEmpty()
             .WithMessage(user => $"O {(user.Type == EUserType.Common ? "CPF" : "CNPJ")} é obrigatório.")
