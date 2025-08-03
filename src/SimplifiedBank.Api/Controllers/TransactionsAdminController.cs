@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SimplifiedBank.Application.Shared.Exceptions;
@@ -11,13 +12,14 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace SimplifiedBank.Api.Controllers;
 
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("v1/[controller]")]
-public class TransactionsController : ControllerBase
+public class TransactionsAdminController : ControllerBase
 {
     private readonly IMediator _mediator;
     
-    public TransactionsController(IMediator mediator)
+    public TransactionsAdminController(IMediator mediator)
     {
         _mediator = mediator;
     }

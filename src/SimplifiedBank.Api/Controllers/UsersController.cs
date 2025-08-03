@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using SimplifiedBank.Application.UseCases.Users.Login;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SimplifiedBank.Api.Dtos.Transactions;
 using SimplifiedBank.Api.Dtos.Users;
 using SimplifiedBank.Application.Shared;
 using SimplifiedBank.Application.Shared.Exceptions;
+using SimplifiedBank.Application.UseCases.Transactions.Create;
 using SimplifiedBank.Application.UseCases.Users.Create;
 using SimplifiedBank.Application.UseCases.Users.Delete;
 using SimplifiedBank.Application.UseCases.Users.GetAll;
@@ -102,7 +104,7 @@ public class UsersController : ControllerBase
         }
     }
 
-    [SwaggerOperation(Summary = "Atualiza os dados pessoais (nome e e-mail) do usuário atualmente logado.")]
+    [SwaggerOperation(Summary = "Atualiza os dados pessoais (nome e e-mail) do usuário atualmente logado (Comum ou Lojista).")]
     [HttpPut("me/update-info")]
     public async Task<IActionResult> UpdateCurrentUserPersonalInfoAsync(
         [FromBody] UpdatePersonalInfoDto updateDto,
@@ -271,6 +273,60 @@ public class UsersController : ControllerBase
         catch
         {
             return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [Authorize(Roles = "Common, Admin")]
+    [SwaggerOperation(Summary = "Cria uma nova transação a partir do usuário atualmente logado (somente Comum).")]
+    [HttpPost("me/new-transaction")]
+    public async Task<IActionResult> SendMoney(
+        [FromBody] CreateTransactionForCurrentUserDto createDto,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var senderId = GetCurrentUserId();
+
+            if (senderId == Guid.Empty)
+                return Unauthorized("Não foi possível recuperar o ID do usuário. Refaça o login e tente novamente.");
+            
+            var request = new CreateTransactionRequest
+            {
+                SenderId = senderId,
+                ReceiverId = createDto.ReceiverId,
+                Value = createDto.Value
+            };
+            
+            var response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Errors.Select(error => new
+            {
+                Property = error.PropertyName,
+                Message = error.ErrorMessage
+            }));
+        }
+        catch (DomainException e)
+        {
+            return StatusCode(400, e.Message);
+        }
+        catch (TransactionNotAuthorizedException e)
+        {
+            return StatusCode(403, e.Message);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(400, "Alguns dados podem ter sido alterados desde o último carregamento. Tente novamente.");
+        }
+        catch (DbUpdateException e)
+        {
+            return StatusCode(400, e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, $"Internal Server Error ({e.Message})");
         }
     }
     

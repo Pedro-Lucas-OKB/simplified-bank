@@ -14,11 +14,11 @@ namespace SimplifiedBank.Api.Controllers;
 [ApiController]
 [Route("v1/[controller]")]
 [Authorize(Roles = "Admin")]
-public class AdminController : ControllerBase
+public class UsersAdminController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public AdminController(IMediator mediator)
+    public UsersAdminController(IMediator mediator)
     {
         _mediator = mediator;
     }
