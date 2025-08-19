@@ -1,34 +1,37 @@
 ﻿services:
+  # Serviço da API
   simplifiedbank.api:
-    image: simplifiedbank.api
+    image: simplifiedbank.api   # imagem criada no Dockerfile 
     build:
-      context: .
+      context: .                # Contexto do build (diretório raiz)
       dockerfile: SimplifiedBank.Api/Dockerfile
     ports:
-      - "5163:8080"
+      - "5163:8080"             # Mapeamento de porta (somente http): host:container
     environment:
+      # Variáveis de ambiente para configuração
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=simplifiedbank.api.db;Database=SimplifiedBank;User ID=sa;Password=1q2w3e4r@#$;TrustServerCertificate=True
     depends_on:
-      - simplifiedbank.api.db
+      - simplifiedbank.api.db   # Garante que o banco inicie primeiro
     networks:
-      - simplifiedbank-network
+      - simplifiedbank-network  # Rede para comunicação entre serviços
     restart: on-failure
     
+  # Serviço do SQL Server
   simplifiedbank.api.db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=1q2w3e4r@#$
+      - ACCEPT_EULA=Y           # Aceita os termos de uso
+      - SA_PASSWORD=1q2w3e4r@#$ # Senha do SA
     ports:
-      - "1433:1433"
+      - "1433:1433"             # Porta padrão do SQL Server
     volumes:
-      - sqlserverdata:/var/opt/mssql
+      - sqlserverdata:/var/opt/mssql # Volume para persistência dos dados
     networks:
-      - simplifiedbank-network
+      - simplifiedbank-network  # Mesma rede da API
         
 networks:
-  simplifiedbank-network:
-    
+  simplifiedbank-network:       # Rede isolada para os serviços
+
 volumes:
-  sqlserverdata:
+  sqlserverdata:                # Volume persistente para o SQL Server
