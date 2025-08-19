@@ -1,0 +1,34 @@
+﻿services:
+  simplifiedbank.api:
+    image: simplifiedbank.api
+    build:
+      context: .
+      dockerfile: SimplifiedBank.Api/Dockerfile
+    ports:
+      - "5163:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=simplifiedbank.api.db;Database=SimplifiedBank;User ID=sa;Password=1q2w3e4r@#$;TrustServerCertificate=True
+    depends_on:
+      - simplifiedbank.api.db
+    networks:
+      - simplifiedbank-network
+    restart: on-failure
+    
+  simplifiedbank.api.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=1q2w3e4r@#$
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+    networks:
+      - simplifiedbank-network
+        
+networks:
+  simplifiedbank-network:
+    
+volumes:
+  sqlserverdata:

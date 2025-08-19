@@ -2,9 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimplifiedBank.Application.Services.Auth;
+using SimplifiedBank.Application.Services.Database;
 using SimplifiedBank.Application.Services.TransactionAuthorization;
 using SimplifiedBank.Domain.Interfaces;
 using SimplifiedBank.Infrastructure.Context;
+using SimplifiedBank.Infrastructure.Context.Services;
 using SimplifiedBank.Infrastructure.Persistence.Repositories;
 using SimplifiedBank.Infrastructure.Persistence.UnitOfWork;
 using SimplifiedBank.Infrastructure.Security;
@@ -26,6 +28,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IMigrationService, MigrationService>();
         
         services.AddHttpClient<ITransactionAuthorizerService, TransactionAuthorizerService>();
 

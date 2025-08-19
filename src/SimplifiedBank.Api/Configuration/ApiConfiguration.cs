@@ -3,7 +3,9 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SimplifiedBank.Application.Services.Database;
 using SimplifiedBank.Infrastructure;
+using SimplifiedBank.Infrastructure.Context.Services;
 
 namespace SimplifiedBank.Api.Configuration;
 
@@ -82,6 +84,7 @@ public static class ApiConfiguration
     {
         if (app.Environment.IsDevelopment())
         {
+            _ = app.ApplyDatabaseMigrations();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -124,4 +127,15 @@ public static class ApiConfiguration
             };
         });
     }
+    
+    public static async Task<IApplicationBuilder> ApplyDatabaseMigrations(
+        this IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        var migrationService = scope.ServiceProvider
+            .GetRequiredService<IMigrationService>();
+        await migrationService.MigrateAsync();
+        return app;
+    }
+
 }
