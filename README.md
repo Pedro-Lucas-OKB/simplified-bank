@@ -68,24 +68,17 @@ O projeto aplica **_design patterns_** e outras boas práticas de desenvolviment
 - [ ] Serviços externos de notificação (a implementar)
 - [x] Segurança do saldo dos usuários contra inconsistência e concorrência
 - [x] Autenticação JWT Bearer
-- [ ] Dockerização (planejado)
+- [x] Dockerização com Docker Compose
 
 ---
 
-## 🛠️ Como rodar o projeto (em breve)
-```bash
-# Clone o repositório
-git clone https://github.com/Pedro-Lucas-OKB/simplified-bank.git
+## 🛠️ Como rodar o projeto
+Para rodar o projeto localmente, siga estas [INSTRUÇÕES](INSTRUCTIONS.md) 
 
-# Abra no VS Code, no Visual Studio ou no Jetbrains Rider
-# Configure a string de conexão no appsettings.json
-# Rode as migrations manualmente (ou aguarde dockerização)
-
-# Execute a API
-dotnet run --project SimplifiedBank.API
-```
-
-> 🚧 Instruções completas de execução e dockerização serão incluídas futuramente.
+### Pré-requisitos
+- [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Git](https://git-scm.com/downloads) (para clonagem do repo)
 
 ---
 
