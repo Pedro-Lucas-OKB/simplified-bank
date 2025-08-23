@@ -26,7 +26,8 @@ public class EmailService : IEmailService
             From = new MailAddress(_emailConfiguration.FromEmail, _emailConfiguration.FromName),
             To = { new MailAddress(toEmail, toName) },
             Subject = subject,
-            Body = body
+            Body = body,
+            IsBodyHtml = true
         };
 
         smtpClient.Host = _emailConfiguration.SmtpHost;

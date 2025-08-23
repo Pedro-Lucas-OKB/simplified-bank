@@ -43,20 +43,25 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, UserResponse
         await _userRepository.CreateAsync(user, cancellationToken);;
         await _unitOfWork.CommitAsync(cancellationToken);
         
-        // E-mail de boas-vindas
+        await SendWelcomeEmail(user.Email, user.FullName);       
+        
+        return user;
+    }
+    
+    // E-mail de boas-vindas para novos usuários
+    private async Task SendWelcomeEmail(string email, string fullName)
+    {
         try
         {
             await _emailService.SendEmailAsync(
-                user.FullName,
-                user.Email,
+                fullName,
+                email,
                 subject: "Boas-vindas ao Simplified Bank!",
-                body: @$"Olá, {user.FullName}! Seja bem-vindo(a) ao Simplified Bank, o seu banco digital simplificado!");
+                body: $@"Olá, {fullName}! <br><br>Seja bem-vindo(a) ao Simplified Bank, o seu banco digital simplificado!");
         }
         catch (Exception e)
         {
-            new SmtpServerException(e, user.Email, "E-mail de boas-vindas");
+            new SmtpServerException(e, email, "E-mail de boas-vindas"); // para logar o erro
         }
-        
-        return user;
     }
 }
