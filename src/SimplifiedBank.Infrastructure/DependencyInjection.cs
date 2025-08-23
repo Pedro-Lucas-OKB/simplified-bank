@@ -3,10 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimplifiedBank.Application.Services.Auth;
 using SimplifiedBank.Application.Services.Database;
+using SimplifiedBank.Application.Services.Notification;
 using SimplifiedBank.Application.Services.TransactionAuthorization;
 using SimplifiedBank.Domain.Interfaces;
 using SimplifiedBank.Infrastructure.Context;
 using SimplifiedBank.Infrastructure.Context.Services;
+using SimplifiedBank.Infrastructure.Notifications;
 using SimplifiedBank.Infrastructure.Persistence.Repositories;
 using SimplifiedBank.Infrastructure.Persistence.UnitOfWork;
 using SimplifiedBank.Infrastructure.Security;
@@ -36,6 +38,9 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, SecureIdentityPasswordHasher>();
 
         services.AddTransient<ITokenService, TokenService>();
+
+        services.Configure<EmailConfiguration>(configuration.GetSection("EmailSettings"));
+        services.AddTransient<IEmailService, EmailService>();
         
         return services;       
     }
