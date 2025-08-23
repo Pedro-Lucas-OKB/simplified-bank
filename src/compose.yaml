@@ -11,6 +11,8 @@
       # Variáveis de ambiente para configuração
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=simplifiedbank.api.db;Database=SimplifiedBank;User ID=sa;Password=1q2w3e4r@#$;TrustServerCertificate=True
+      - EmailSettings__SmtpHost=smtp4dev
+      - EmailSettings__SmtpPort=25
     depends_on:
       - simplifiedbank.api.db   # Garante que o banco inicie primeiro
     networks:
@@ -29,9 +31,24 @@
       - sqlserverdata:/var/opt/mssql # Volume para persistência dos dados
     networks:
       - simplifiedbank-network  # Mesma rede da API
+  
+  # smtp4dev - Servidor SMTP para testes
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      # O número a esquerda corresponse à porta para acessar a interface web
+      - '5000:80'
+      # Porta do servidor SMTP
+      - '2525:25'
+    volumes:
+      - smtp4dev-data:/smtp4dev
+    networks:
+      - simplifiedbank-network 
         
 networks:
   simplifiedbank-network:       # Rede isolada para os serviços
 
 volumes:
   sqlserverdata:                # Volume persistente para o SQL Server
+  smtp4dev-data:                # Volume persistente para o smtp4dev
