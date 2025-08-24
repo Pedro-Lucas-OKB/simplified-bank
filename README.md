@@ -1,5 +1,16 @@
 # Simplified Bank
+
+[![Versão](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://img.shields.io/badge/version-1.0.0-blue.svg)
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow.svg)](https://shields.io/)
+[![.NET](https://img.shields.io/badge/.NET-8.0-5C2D91)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=c-sharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
+[![Docker](https://img.shields.io/badge/Docker-enabled-2496ED?logo=docker)](https://www.docker.com/)
+[![Swagger](https://img.shields.io/badge/Swagger-UI-85EA2D?logo=swagger)](https://swagger.io/)
+
 Bem-vindo(a) ao **Simplified Bank**, uma API de transações financeiras entre usuários, desenvolvida em C# com foco em arquitetura limpa e boas práticas modernas.
+
+---
 
 ## 📚 Propósito
 Este projeto visa simular operações bancárias essenciais (como transferências entre usuários), servindo como laboratório para estudo de padrões arquiteturais robustos, validação de dados sensíveis (CPF/CNPJ) e implementação de regras de negócio reais do universo financeiro.
@@ -8,14 +19,33 @@ Este projeto é baseado no desafio Back-End do PicPay, está **em desenvolviment
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## 🛠️ Como rodar o projeto
+Para rodar o projeto localmente e testar as funcionalidades, siga estas [INSTRUÇÕES](INSTRUCTIONS.md).
+
+### Pré-requisitos
+- [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Git](https://git-scm.com/downloads) (para clonagem do repo)
+
+---
+
+## 🚀 Stack 
+
+### Core
 - C# / ASP.NET Core Web API
 - Entity Framework Core
-- SQL Server
-- Docker Compose (planejado)
-- FluentValidation
-- SecureIdentity
-- Postman e Swagger
+- SQL Server 2022
+
+### Bibliotecas
+- MediatR 12.5.0
+- [FluentValidation](https://github.com/FluentValidation/FluentValidation)
+- [SecureIdentity](https://github.com/andrebaltieri/SecureIdentity) (Hashing de senhas)
+
+### Ferramentas de Desenvolvimento
+- Postman (Testes de API)
+- Swagger (Documentação da API)
+- Docker (Dockerfile e Docker Compose)
+- [smtp4dev](https://github.com/rnwood/smtp4dev) (Servidor SMTP para envio de e-mails)
 
 ---
 
@@ -36,7 +66,7 @@ Este projeto é baseado no desafio Back-End do PicPay, está **em desenvolviment
 ---
 
 ## 🛞 Padrões e Boas Práticas
-O projeto aplica **_design patterns_** e outras boas práticas de desenvolvimento. Dentre eles:
+O projeto aplica **_design patterns_** e outras boas práticas de desenvolvimento:
 - Clean Architecture
 - CQRS parcial e Mediator
 - Repositórios genéricos
@@ -65,20 +95,10 @@ O projeto aplica **_design patterns_** e outras boas práticas de desenvolviment
 - [x] Bônus de novo usuário
 - [x] Validação das regras de Transação
 - [x] Serviços externos de autorização de transação
-- [ ] Serviços externos de notificação (a implementar)
+- [x] Notificações via e-mail 
 - [x] Segurança do saldo dos usuários contra inconsistência e concorrência
 - [x] Autenticação JWT Bearer
 - [x] Dockerização com Docker Compose
-
----
-
-## 🛠️ Como rodar o projeto
-Para rodar o projeto localmente, siga estas [INSTRUÇÕES](INSTRUCTIONS.md) 
-
-### Pré-requisitos
-- [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [Docker](https://www.docker.com/products/docker-desktop/)
-- [Git](https://git-scm.com/downloads) (para clonagem do repo)
 
 ---
 
@@ -94,10 +114,11 @@ SimplifiedBank.Tests/        # Testes de software (planejado)
 ---
 
 ## 📌 Status do Projeto
-Este projeto está **em construção** e será atualizado continuamente.
+Este projeto está em **estágio avançado de desenvolvimento** e está sendo atualizado continuamente.
 
 ---
 
 ## ✨ Contribuições
 Contribuições são bem-vindas!  
+
 Este projeto faz parte do meu portfólio de aprendizado como desenvolvedor backend.
