@@ -1,9 +1,8 @@
 # Simplified Bank
 
 [![Versão](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://img.shields.io/badge/version-1.0.0-blue.svg)
-[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow.svg)](https://shields.io/)
 [![.NET](https://img.shields.io/badge/.NET-8.0-5C2D91)](https://dotnet.microsoft.com/download/dotnet/8.0)
-[![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=c-sharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
+[![C#](https://img.shields.io/badge/C%23-12.0-239120)](https://docs.microsoft.com/en-us/dotnet/csharp/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
 [![Docker](https://img.shields.io/badge/Docker-enabled-2496ED?logo=docker)](https://www.docker.com/)
 [![Swagger](https://img.shields.io/badge/Swagger-UI-85EA2D?logo=swagger)](https://swagger.io/)
@@ -121,4 +120,10 @@ Este projeto está em **estágio avançado de desenvolvimento** e está sendo at
 ## ✨ Contribuições
 Contribuições são bem-vindas!  
 
-Este projeto faz parte do meu portfólio de aprendizado como desenvolvedor backend.
+Este projeto faz parte do meu portfólio de aprendizado como desenvolvedor back-end.
+
+---
+
+## 🗃️ Licença
+Este projeto está licenciado sob a licença MIT.
+* [LICENSE](LICENSE)
