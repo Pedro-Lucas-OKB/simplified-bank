@@ -11,6 +11,12 @@ public abstract class EmailValidator
         if (trimmedEmail.EndsWith('.')) {
             return false;
         }
+
+        if (!trimmedEmail.Contains('@') || !trimmedEmail.Contains('.'))
+        {
+            return false;       
+        }
+        
         try {
             var addr = new MailAddress(email);
             return addr.Address == trimmedEmail;
