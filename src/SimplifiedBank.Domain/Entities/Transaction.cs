@@ -40,6 +40,8 @@ public class Transaction : BaseEntity
         
         switch (value)
         {
+            case <= 0:
+                throw new InvalidTransactionValueException("O valor não deve ser negativo ou zero.");
             case < DomainConfiguration.MinTransactionValue:
                 throw new InvalidTransactionValueException($"O valor deve ser maior ou igual a {DomainConfiguration.MinTransactionValue}.");
             case > DomainConfiguration.MaxTransactionValue:
