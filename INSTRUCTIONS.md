@@ -123,3 +123,9 @@ Para visualizar o conteúdo do e-mail, basta selecionar um da lista apresentada.
 - Certifique-se que o Docker Desktop está em execução.
 - Para logs do Docker: `docker compose logs -f`.
 - Para reiniciar os serviços: `docker compose restart`.
+
+## Executando os Testes Unitários
+1. Para executar os testes unitários, use o comando:
+
+```bash 
+dotnet test .\src\SimplifiedBank.Tests\SimplifiedBank.Tests.cspro```

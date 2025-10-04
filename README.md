@@ -7,40 +7,49 @@
 [![Docker](https://img.shields.io/badge/Docker-enabled-2496ED?logo=docker)](https://www.docker.com/)
 [![Swagger](https://img.shields.io/badge/Swagger-UI-85EA2D?logo=swagger)](https://swagger.io/)
 
-Bem-vindo(a) ao **Simplified Bank**, uma API de transações financeiras entre usuários, desenvolvida em C# com foco em arquitetura limpa e boas práticas modernas.
+Bem-vindo(a) ao **Simplified Bank**, uma API de transações financeiras entre usuários, desenvolvida em C# com foco em
+arquitetura limpa e boas práticas modernas.
 
 ---
 
 ## 📚 Propósito
-Este projeto visa simular operações bancárias essenciais (como transferências entre usuários), servindo como laboratório para estudo de padrões arquiteturais robustos, validação de dados sensíveis (CPF/CNPJ) e implementação de regras de negócio reais do universo financeiro.
+
+Este projeto visa simular operações bancárias essenciais (como transferências entre usuários), servindo como laboratório
+para estudo de padrões arquiteturais robustos, validação de dados sensíveis (CPF/CNPJ) e implementação de regras de
+negócio reais do universo financeiro.
 
 Este projeto é baseado no desafio Back-End do PicPay, está **em desenvolvimento** e, portanto, ainda não está completo.
 
 ---
 
 ## 🛠️ Como rodar o projeto
+
 Para rodar o projeto localmente e testar as funcionalidades, siga estas [INSTRUÇÕES](INSTRUCTIONS.md).
 
 ### Pré-requisitos
+
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [Docker](https://www.docker.com/products/docker-desktop/)
 - [Git](https://git-scm.com/downloads) (para clonagem do repo)
 
 ---
 
-## 🚀 Stack 
+## 🚀 Stack
 
 ### Core
+
 - C# / ASP.NET Core Web API
 - Entity Framework Core
 - SQL Server 2022
 
 ### Bibliotecas
+
 - MediatR 12.5.0
 - [FluentValidation](https://github.com/FluentValidation/FluentValidation)
 - [SecureIdentity](https://github.com/andrebaltieri/SecureIdentity) (Hashing de senhas)
 
 ### Ferramentas de Desenvolvimento
+
 - Postman (Testes de API)
 - Swagger (Documentação da API)
 - Docker (Dockerfile e Docker Compose)
@@ -49,11 +58,14 @@ Para rodar o projeto localmente e testar as funcionalidades, siga estas [INSTRU�
 ---
 
 ## 📄 Regras de Negócio
+
 - O sistema deve possuir dois tipos de usuário, sendo o usuário **Comum** e o usuário **Lojista**.
 - A senha dos usuários deve ser criptografada e armazenada se forma segura.
-- O E-mail e o documento (CPF/CNPJ) de um usuário devem ser **únicos** no sistema, não sendo possível realizar o cadastro caso uma ou ambas as propriedades já existam na base de dados.
-- Os novos usuários do sistema recebem um bônus de R$ 100,00, sendo que esse valor pode ser alterado ou removido a qualquer momento.
-- Apenas os usuários do tipo **Comum** podem enviar transferências. 
+- O E-mail e o documento (CPF/CNPJ) de um usuário devem ser **únicos** no sistema, não sendo possível realizar o
+  cadastro caso uma ou ambas as propriedades já existam na base de dados.
+- Os novos usuários do sistema recebem um bônus de R$ 100,00, sendo que esse valor pode ser alterado ou removido a
+  qualquer momento.
+- Apenas os usuários do tipo **Comum** podem enviar transferências.
 - Ambos os usuários **Comum** e **Lojista** podem receber transferências.
 - Para realizar e/ou consultar uma transferência, o usuário deve estar registrado e autenticado no sistema.
 - Ao realizar a transferência, o usuário deverá ter saldo suficiente para concluir a transação.
@@ -65,7 +77,9 @@ Para rodar o projeto localmente e testar as funcionalidades, siga estas [INSTRU�
 ---
 
 ## 🛞 Padrões e Boas Práticas
+
 O projeto aplica **_design patterns_** e outras boas práticas de desenvolvimento:
+
 - Clean Architecture
 - CQRS parcial e Mediator
 - Repositórios genéricos
@@ -83,6 +97,7 @@ O projeto aplica **_design patterns_** e outras boas práticas de desenvolviment
 ---
 
 ## 🎯 Funcionalidades Implementadas
+
 - [x] Criação inicial de entidades: `User` e `Transaction`
 - [x] Estrutura de camadas: Domain, Application, Infrastructure e API
 - [x] Repositórios e Unit of Work definidos
@@ -94,14 +109,30 @@ O projeto aplica **_design patterns_** e outras boas práticas de desenvolviment
 - [x] Bônus de novo usuário
 - [x] Validação das regras de Transação
 - [x] Serviços externos de autorização de transação
-- [x] Notificações via e-mail 
+- [x] Notificações via e-mail
 - [x] Segurança do saldo dos usuários contra inconsistência e concorrência
 - [x] Autenticação JWT Bearer
 - [x] Dockerização com Docker Compose
 
 ---
 
+## 🧪 Testes Implementados
+
+O projeto utiliza xUnit como framework de testes, junto com FluentAssertions para asserções mais expressivas. Os testes estão organizados nas seguintes categorias:
+
+### Testes de Domínio
+
+- **Entidades**
+    - `UserTests`: Validação da criação e comportamento de usuários
+    - `TransactionTests`: Validação das regras de transações financeiras
+
+- **Validadores**
+    - `CpfValidatorTests`: Validação de CPFs
+    - `CnpjValidatorTests`: Validação de CNPJs
+    - `EmailValidatorTests`: Validação de endereços de e-mail
+
 ## 📂 Estrutura do Projeto
+
 ```plaintext
 SimplifiedBank.Domain/       # Entidades, enums, validadores e exceções
 SimplifiedBank.Application/  # UseCases, Services, Requests/Responses, Validators
@@ -113,17 +144,50 @@ SimplifiedBank.Tests/        # Testes de software (planejado)
 ---
 
 ## 📌 Status do Projeto
+
 Este projeto está em **estágio avançado de desenvolvimento** e está sendo atualizado continuamente.
 
 ---
 
 ## ✨ Contribuições
-Contribuições são bem-vindas!  
+
+Contribuições são bem-vindas!
 
 Este projeto faz parte do meu portfólio de aprendizado como desenvolvedor back-end.
 
 ---
 
 ## 🗃️ Licença
+
 Este projeto está licenciado sob a licença MIT.
+
 * [LICENSE](LICENSE)
+
+---
+
+## 📚 Referências
+Abaixo, estão algumas das referencias utilizadas no desenvolvimento deste projeto. Para consultar mais, acesse o arquivo [REFERENCES](docs/references.txt).
+
+### Artigos e Tutoriais
+- [Macoratti - Docker com SQL Server e ASP.NET](https://www.macoratti.net/21/04/docker_sqlasp1.htm)
+- [Macoratti - Unit of Work Pattern](https://www.macoratti.net/16/01/net_uow2.htm)
+- [Macoratti - Swagger na API](https://macoratti.net/22/04/swagger_aprdoc2.htm)
+- [Medium - Rich Domain Models](https://medium.com/@aboutcoding/rich-domain-models-22f176ad6f1b)
+- [Macoratti - Factory Pattern](https://www.macoratti.net/19/09/c_factory1.htm)
+- [Balta.io - JWT e Bearer no ASP.NET 7](https://balta.io/blog/autenticacao-e-autorizacao-com-jwt-e-bearer-no-aspnet-7)
+
+### Documentação Oficial
+- [Microsoft - Concurrency in EF Core](https://learn.microsoft.com/en-us/ef/core/saving/concurrency?tabs=fluent-api)
+- [Microsoft - Authentication and Authorization](https://learn.microsoft.com/pt-br/aspnet/web-api/overview/security/authentication-and-authorization-in-aspnet-web-api)
+- [Microsoft - Init-only Properties](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/init)
+
+### Projetos de Referência
+- [PicPay Backend Challenge](https://github.com/PicPay/picpay-desafio-backend)
+- [Balta.io - Clean Store](https://github.com/balta-io/2506)
+- [Balta.io - Payment Context](https://github.com/balta-io/1975)
+
+
+### Ferramentas
+- [4Devs - Gerador de CPF](https://www.4devs.com.br/gerador_de_cpf)
+- [toolshub - Gearador de CNPJ](https://toolshub.com.br/gerador-cnpj-filial)
+- [JWT.io](https://www.jwt.io/) - Debugger e gerador de tokens JWT
